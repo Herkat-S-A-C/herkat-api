@@ -14,9 +14,9 @@ import java.util.NoSuchElementException;
 @Service
 public class ProductTypeService {
 
-    private ProductTypeRepository repository;
-    private ProductTypeValidator validator;
-    private ProductTypeMapper mapper;
+    private final ProductTypeRepository repository;
+    private final ProductTypeValidator validator;
+    private final ProductTypeMapper mapper;
 
     public ProductTypeService(ProductTypeMapper mapper,
                               ProductTypeValidator validator,
@@ -48,8 +48,7 @@ public class ProductTypeService {
             throw new NoSuchElementException("No hay tipos de productos registrados.");
         }
 
-        return productTypes.stream().map(
-                productType -> mapper.toDTO(productType)).toList();
+        return productTypes.stream().map(mapper::toDTO).toList();
     }
 
     public ProductTypeResponseDTO findById(Integer id) {
@@ -70,7 +69,7 @@ public class ProductTypeService {
         return mapper.toDTO(productType);
     }
 
-    public ProductTypeResponseDTO uptade(Integer id, ProductTypeRequestDTO requestDTO) {
+    public ProductTypeResponseDTO update(Integer id, ProductTypeRequestDTO requestDTO) {
         // Validamos los datos antes de actualizar
         validator.validateBeforeUpdate(id, requestDTO);
 
