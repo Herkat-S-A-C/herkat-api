@@ -20,8 +20,8 @@ public class ProductTypeValidator {
             throw new BadRequestException("El nombre del tipo de producto no puede estar vacío.");
         }
 
-        if(repository.findByName(dto.getName()).isPresent()) {
-            throw new ConflictException("El nombre de la categoría ya existe.");
+        if(repository.findByNameIgnoreCase(dto.getName()).isPresent()) {
+            throw new ConflictException("El nombre del tipo de producto ya existe.");
         }
     }
 
@@ -30,7 +30,7 @@ public class ProductTypeValidator {
             throw new BadRequestException("El nombre del tipo de producto no puede estar vacío.");
         }
 
-        repository.findByName(dto.getName()).ifPresent(existingType -> {
+        repository.findByNameIgnoreCase(dto.getName()).ifPresent(existingType -> {
             if(!existingType.getId().equals(id)) {
                 throw new ConflictException("El nombre del tipo de producto ya existe.");
             }

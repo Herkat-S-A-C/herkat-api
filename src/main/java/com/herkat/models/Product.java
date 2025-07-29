@@ -34,6 +34,9 @@ public class Product {
     @Column(unique = true, nullable = false)
     private String imageUrl;
 
+    @Column(nullable = false)
+    private String imagePublicId;
+
     @Column(name = "registration_date", nullable = false)
     private LocalDateTime registrationDate;
 

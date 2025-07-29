@@ -37,17 +37,20 @@ public class ProductTypeService {
         // Guardamos el nuevo tipo en la base de datos
         ProductType savedProductType = repository.save(newProductType);
 
-        // Convertimos la entidad guardada a DTO para devolverla
+        // Convertimos la entidad guardada a DTO para retornarlo
         return mapper.toDTO(savedProductType);
     }
 
     public List<ProductTypeResponseDTO> findAll() {
+        // Buscamos todos los tipos de producto
         List<ProductType> productTypes = repository.findAll();
 
+        // Validamos que la lista no esté vacía
         if(productTypes.isEmpty()) {
             throw new NoSuchElementException("No hay tipos de productos registrados.");
         }
 
+        // Convertimos la lista de entidades a DTO para retornarlo
         return productTypes.stream().map(mapper::toDTO).toList();
     }
 
@@ -62,7 +65,7 @@ public class ProductTypeService {
 
     public ProductTypeResponseDTO findByName(String name) {
         // Buscar tipo de producto por su nombre
-        ProductType productType = repository.findByName(name)
+        ProductType productType = repository.findByNameIgnoreCase(name)
                 .orElseThrow(() -> new NoSuchElementException("Tipo de producto no encontrado"));
 
         // Convertimos la entidad a DTO para retornarlo
