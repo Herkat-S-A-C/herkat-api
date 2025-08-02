@@ -1,7 +1,8 @@
 package com.herkat.controllers;
 
-import com.herkat.dtos.ProductTypeRequestDTO;
-import com.herkat.dtos.ProductTypeResponseDTO;
+import com.herkat.dtos.productType.NewProductTypeDto;
+import com.herkat.dtos.productType.ProductTypeDto;
+import com.herkat.dtos.productType.UpdateProductTypeDto;
 import com.herkat.services.ProductTypeService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -21,36 +22,40 @@ public class ProductTypeController {
     }
 
     @PostMapping
-    public ResponseEntity<ProductTypeResponseDTO> register(@Valid @RequestBody ProductTypeRequestDTO requestDTO) {
-        ProductTypeResponseDTO newType = service.register(requestDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newType);
+    @ResponseStatus(HttpStatus.CREATED)
+    public ProductTypeDto register(@Valid @RequestBody NewProductTypeDto requestDTO) {
+        return service.register(requestDTO);
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductTypeResponseDTO>> findAll() {
-        return ResponseEntity.ok(service.findAll());
+    @ResponseStatus(HttpStatus.OK)
+    public List<ProductTypeDto> findAll() {
+        return service.findAll();
     }
 
     @GetMapping("/id/{id}")
-    public ResponseEntity<ProductTypeResponseDTO> findById(@PathVariable Integer id) {
-        return ResponseEntity.ok(service.findById(id));
+    @ResponseStatus(HttpStatus.OK)
+    public ProductTypeDto findById(@PathVariable Integer id) {
+        return service.findById(id);
     }
 
     @GetMapping("/name/{name}")
-    public ResponseEntity<ProductTypeResponseDTO> findByName(@PathVariable String name) {
-        return ResponseEntity.ok(service.findByName(name));
+    @ResponseStatus(HttpStatus.OK)
+    public ProductTypeDto findByName(@PathVariable String name) {
+        return service.findByName(name);
     }
 
     @PutMapping("/{id}")
-    private ResponseEntity<ProductTypeResponseDTO> update(@PathVariable Integer id,
-                                                          @Valid @RequestBody ProductTypeRequestDTO requestDTO) {
-        return ResponseEntity.ok(service.update(id, requestDTO));
+    @ResponseStatus(HttpStatus.OK)
+    public ProductTypeDto update(@PathVariable Integer id,
+                                 @Valid @RequestBody UpdateProductTypeDto updateProductTypeDto) {
+        return service.update(id, updateProductTypeDto);
     }
 
     @DeleteMapping("/{id}")
-    private ResponseEntity<Void> delete(@PathVariable Integer id) {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Integer id) {
         service.delete(id);
-        return ResponseEntity.noContent().build();
     }
 
 }

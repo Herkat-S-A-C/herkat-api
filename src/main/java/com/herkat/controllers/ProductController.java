@@ -2,10 +2,9 @@ package com.herkat.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.herkat.dtos.ProductRequestDTO;
-import com.herkat.dtos.ProductResponseDTO;
+import com.herkat.dtos.product.ProductRequestDTO;
+import com.herkat.dtos.product.ProductResponseDTO;
 import com.herkat.services.ProductService;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

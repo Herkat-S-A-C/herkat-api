@@ -19,4 +19,10 @@ public class ProductType {
     @Column(unique = true, nullable = false)
     private String name;
 
+    public static ProductType newProductType(String name) {
+        return new ProductType(
+                null,
+                name);
+    }
+
 }

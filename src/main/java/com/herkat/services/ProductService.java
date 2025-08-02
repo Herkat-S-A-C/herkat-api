@@ -1,8 +1,7 @@
 package com.herkat.services;
 
-import com.cloudinary.utils.ObjectUtils;
-import com.herkat.dtos.ProductRequestDTO;
-import com.herkat.dtos.ProductResponseDTO;
+import com.herkat.dtos.product.ProductRequestDTO;
+import com.herkat.dtos.product.ProductResponseDTO;
 import com.herkat.mappers.ProductMapper;
 import com.herkat.models.Product;
 import com.herkat.models.ProductType;

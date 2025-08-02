@@ -1,4 +1,4 @@
-package com.herkat.dtos;
+package com.herkat.dtos.product;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

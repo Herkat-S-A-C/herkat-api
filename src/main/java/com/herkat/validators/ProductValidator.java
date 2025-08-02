@@ -1,6 +1,6 @@
 package com.herkat.validators;
 
-import com.herkat.dtos.ProductRequestDTO;
+import com.herkat.dtos.product.ProductRequestDTO;
 import com.herkat.exceptions.BadRequestException;
 import com.herkat.exceptions.ConflictException;
 import com.herkat.repositories.ProductRepository;

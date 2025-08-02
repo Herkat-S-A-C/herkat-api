@@ -1,4 +1,4 @@
-package com.herkat.dtos;
+package com.herkat.dtos.product;
 
 import lombok.Data;
 
@@ -22,5 +22,7 @@ public class ProductResponseDTO {
     private String imagePublicId;
 
     private LocalDateTime registrationDate;
+
+
 
 }

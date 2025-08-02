@@ -45,4 +45,18 @@ public class Product {
         registrationDate = LocalDateTime.now();
     }
 
+    public static Product newProduct(String name, ProductType type, Integer capacity, String description,
+                                     String imageUrl, String imagePublicId, LocalDateTime registrationDate) {
+        return new Product(
+                null,
+                name,
+                type,
+                capacity,
+                description,
+                imageUrl,
+                imagePublicId,
+                registrationDate
+        );
+    }
+
 }

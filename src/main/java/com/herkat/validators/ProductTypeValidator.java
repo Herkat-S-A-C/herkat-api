@@ -1,6 +1,7 @@
 package com.herkat.validators;
 
-import com.herkat.dtos.ProductTypeRequestDTO;
+import com.herkat.dtos.productType.NewProductTypeDto;
+import com.herkat.dtos.productType.UpdateProductTypeDto;
 import com.herkat.exceptions.BadRequestException;
 import com.herkat.exceptions.ConflictException;
 import com.herkat.repositories.ProductTypeRepository;
@@ -15,7 +16,7 @@ public class ProductTypeValidator {
         this.repository = repository;
     }
 
-    public void validateBeforeRegister(ProductTypeRequestDTO dto) {
+    public void validateBeforeRegister(NewProductTypeDto dto) {
         if(dto.getName() == null || dto.getName().isBlank()) {
             throw new BadRequestException("El nombre del tipo de producto no puede estar vacío.");
         }
@@ -25,16 +26,17 @@ public class ProductTypeValidator {
         }
     }
 
-    public void validateBeforeUpdate(Integer id, ProductTypeRequestDTO dto) {
+    public void validateBeforeUpdate(Integer id, UpdateProductTypeDto dto) {
         if(dto.getName() == null || dto.getName().isBlank()) {
             throw new BadRequestException("El nombre del tipo de producto no puede estar vacío.");
         }
 
-        repository.findByNameIgnoreCase(dto.getName()).ifPresent(existingType -> {
-            if(!existingType.getId().equals(id)) {
-                throw new ConflictException("El nombre del tipo de producto ya existe.");
-            }
-        });
+        repository.findByNameIgnoreCase(dto.getName())
+                .ifPresent(existingType -> {
+                    if(!existingType.getId().equals(id)) {
+                        throw new ConflictException("El nombre del tipo de producto ya existe.");
+                    }
+                });
     }
 
 }
