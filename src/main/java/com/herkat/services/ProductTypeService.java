@@ -3,7 +3,6 @@ package com.herkat.services;
 import com.herkat.dtos.productType.NewProductTypeDto;
 import com.herkat.dtos.productType.ProductTypeDto;
 import com.herkat.dtos.productType.UpdateProductTypeDto;
-import com.herkat.mappers.ProductTypeMapper;
 import com.herkat.models.ProductType;
 import com.herkat.repositories.ProductTypeRepository;
 import com.herkat.validators.ProductTypeValidator;
@@ -39,33 +38,24 @@ public class ProductTypeService {
 
     public List<ProductTypeDto> findAll() {
         // Buscamos todos los tipos de producto
-        List<ProductType> productTypes = repository.findAll();
-
-        // Validamos que la lista no esté vacía
-        if(productTypes.isEmpty()) {
-            throw new NoSuchElementException("No hay tipos de productos registrados.");
-        }
-
-        // Convertimos la lista de entidades a DTO para retornarlo
-        return productTypes.stream().map(ProductTypeDto::fromEntity).toList();
+        return repository.findAll()
+                .stream()
+                .map(ProductTypeDto::fromEntity)
+                .toList();
     }
 
     public ProductTypeDto findById(Integer id) {
         // Buscar tipo de producto por su ID
-        ProductType productType = repository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Tipo de producto no encontrado."));
-
-        // Convertimos entidad a DTO para retornarlo
-        return ProductTypeDto.fromEntity(productType);
+         return repository.findById(id)
+                 .map(ProductTypeDto::fromEntity)
+                 .orElseThrow(() -> new NoSuchElementException("Tipo de producto con ID: " + id + " no encontrado."));
     }
 
     public ProductTypeDto findByName(String name) {
         // Buscar tipo de producto por su nombre
-        ProductType productType = repository.findByNameIgnoreCase(name)
-                .orElseThrow(() -> new NoSuchElementException("Tipo de producto no encontrado."));
-
-        // Convertimos la entidad a DTO para retornarlo
-        return ProductTypeDto.fromEntity(productType);
+        return repository.findByNameIgnoreCase(name)
+                .map(ProductTypeDto::fromEntity)
+                .orElseThrow(() -> new NoSuchElementException("Tipo de producto con nombre: " + name + " no encontrado."));
     }
 
     public ProductTypeDto update(Integer id, UpdateProductTypeDto updateProductTypeDto) {
@@ -74,7 +64,7 @@ public class ProductTypeService {
 
         // Buscamos el tipo de producto por su ID
         ProductType existingType = repository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Tipo de producto no encontrado."));
+                .orElseThrow(() -> new NoSuchElementException("Tipo de producto con ID: " + id + " no encontrado."));
 
         // Creamos la nueva instancia con los campos actualizados
         ProductType updatedType = UpdateProductTypeDto.updateEntity(updateProductTypeDto, existingType);
