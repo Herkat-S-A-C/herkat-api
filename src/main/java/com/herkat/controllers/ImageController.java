@@ -1,6 +1,7 @@
 package com.herkat.controllers;
 
 import com.herkat.dtos.image.ImageDto;
+import com.herkat.models.Image;
 import com.herkat.services.ImageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -11,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/images")
+@RequestMapping("/api/v1/images")
 public class ImageController {
 
     private final ImageService service;
@@ -22,7 +23,7 @@ public class ImageController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ImageDto addImage(@RequestParam("file") MultipartFile file) throws IOException {
+    public Image addImage(@RequestParam("file") MultipartFile file) throws IOException {
         return service.addImage(file);
     }
 

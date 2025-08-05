@@ -9,7 +9,7 @@ import lombok.Data;
 public class NewProductTypeDto {
 
     @NotBlank(message = "El nombre del tipo de producto es obligatorio.")
-    @Size(max = 50, message = "El nombre del tipo de producto no puede superar los 50 carácteres.")
+    @Size(max = 50, message = "El nombre del tipo de producto no puede superar los 50 caracteres.")
     private String name;
 
     public static ProductType toEntity(NewProductTypeDto newProductTypeDto) {
