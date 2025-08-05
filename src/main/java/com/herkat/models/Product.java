@@ -31,11 +31,9 @@ public class Product {
     @Column(nullable = false)
     private String description;
 
-    @Column(unique = true, nullable = false)
-    private String imageUrl;
-
-    @Column(nullable = false)
-    private String imagePublicId;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(unique = true, nullable = false)
+    private Image image;
 
     @Column(name = "registration_date", nullable = false)
     private LocalDateTime registrationDate;
@@ -46,15 +44,14 @@ public class Product {
     }
 
     public static Product newProduct(String name, ProductType type, Integer capacity, String description,
-                                     String imageUrl, String imagePublicId, LocalDateTime registrationDate) {
+                                     Image image, LocalDateTime registrationDate) {
         return new Product(
                 null,
                 name,
                 type,
                 capacity,
                 description,
-                imageUrl,
-                imagePublicId,
+                image,
                 registrationDate
         );
     }

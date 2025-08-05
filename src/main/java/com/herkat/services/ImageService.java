@@ -24,7 +24,7 @@ public class ImageService {
         this.cloudinaryService = cloudinaryService;
     }
 
-    public ImageDto addImage(MultipartFile file) throws IOException {
+    public Image addImage(MultipartFile file) throws IOException {
         // Subimos la imagen a Cloudinary
         CloudinaryImage uploaded = cloudinaryService.upload(file);
 
@@ -32,10 +32,7 @@ public class ImageService {
         Image newImage = NewImageDto.toEntity(uploaded.getUrl(), uploaded.getPublicId());
 
         // Guardamos en la DB
-        Image image = imageRepository.save(newImage);
-
-        // Convertimos la entidad a DTO para retornarlo
-        return ImageDto.fromEntity(image);
+        return imageRepository.save(newImage);
     }
 
     public List<ImageDto> findAll() {
