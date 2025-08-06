@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "product_types")
-public class ProductType {
+@Table(name = "machine_types")
+public class MachineType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,8 +19,8 @@ public class ProductType {
     @Column(unique = true, nullable = false)
     private String name;
 
-    public static ProductType newProductType(String name) {
-        return new ProductType(
+    public static MachineType newMachineType(String name) {
+        return new MachineType(
                 null,
                 name
         );
