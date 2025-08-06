@@ -39,27 +39,12 @@ public class ProductValidator {
     }
 
     public void validateBeforeUpdate(Integer id, UpdateProductDto dto) {
-        if(dto.getName() == null || dto.getName().isBlank()) {
-            throw new BadRequestException("El nombre del producto no puede estar vacío.");
-        }
-
-        if(dto.getTypeId() == null) {
-            throw new BadRequestException("El ID del tipo de producto no puede estar vacío.");
-        }
-
-        if(dto.getCapacity() == null) {
-            throw new BadRequestException("La capacidad del producto no puede estar vacía.");
-        }
-
-        if(dto.getDescription() == null || dto.getDescription().isBlank()) {
-            throw new BadRequestException("La descripción del producto no puede estar vacía.");
-        }
-
-        repository.findByNameIgnoreCase(dto.getName()).ifPresent(existingProduct -> {
-            if(!existingProduct.getId().equals(id)) {
-                throw new ConflictException("El nombre del producto ya existe.");
-            }
-        });
+        repository.findByNameIgnoreCase(dto.getName())
+                .ifPresent(existingProduct -> {
+                    if(!existingProduct.getId().equals(id)) {
+                        throw new ConflictException("El nombre del producto ya existe.");
+                    }
+                });
     }
 
 }

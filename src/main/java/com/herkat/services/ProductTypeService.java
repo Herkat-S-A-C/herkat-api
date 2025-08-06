@@ -17,9 +17,9 @@ public class ProductTypeService {
     private final ProductTypeRepository repository;
     private final ProductTypeValidator validator;
 
-    public ProductTypeService(ProductTypeValidator validator, ProductTypeRepository repository) {
-        this.validator = validator;
+    public ProductTypeService(ProductTypeRepository repository, ProductTypeValidator validator) {
         this.repository = repository;
+        this.validator = validator;
     }
 
     public ProductTypeDto register(NewProductTypeDto requestDTO) {
