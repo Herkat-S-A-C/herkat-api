@@ -24,15 +24,44 @@ public class ImageService {
         this.cloudinaryService = cloudinaryService;
     }
 
-    public Image addImage(MultipartFile file) throws IOException {
+
+    // ********************* MÉTODOS INTERNOS PARA EL SERVICE ********************* //
+
+    protected Image addImageEntity(MultipartFile file) throws IOException {
         // Subimos la imagen a Cloudinary
         CloudinaryImage uploaded = cloudinaryService.upload(file);
 
         // Creamos la nueva entidad
         Image newImage = NewImageDto.toEntity(uploaded.getUrl(), uploaded.getPublicId());
 
-        // Guardamos en la DB
+        // Guardamos en la base de datos
         return imageRepository.save(newImage);
+    }
+
+    protected Image updateImageEntity(Integer id, MultipartFile newFile) throws IOException {
+        // Buscamos la imagen por su ID
+        Image existing = imageRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Imagen con ID: " + id + " no encontrada."));
+
+        // Borramos la imagen anterior en Cloudinary
+        cloudinaryService.delete(existing.getPublicId());
+
+        // Subimos la nueva imagen
+        CloudinaryImage newImage = cloudinaryService.upload(newFile);
+
+        // Creamos la nueva entidad con los datos actualizados
+        Image updatedImage = UpdateImageDto.updateEntity(existing, newImage.getUrl(), newImage.getPublicId());
+
+        // Guardamos en la DB
+        return imageRepository.save(updatedImage);
+    }
+
+
+    // ********************* MÉTODOS PÚBLICOS PARA EL CONTROLLER ********************* //
+
+    public ImageDto addImage(MultipartFile file) throws IOException {
+        // Convertimos la entidad a DTO para retornarlo
+        return ImageDto.fromEntity(addImageEntity(file));
     }
 
     public List<ImageDto> findAll() {
@@ -51,24 +80,8 @@ public class ImageService {
     }
 
     public ImageDto update(Integer id, MultipartFile newFile) throws IOException {
-        // Buscamos la imagen por su ID
-        Image existing = imageRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Imagen con ID: " + id + " no encontrada."));
-
-        // Borramos la imagen anterior en Cloudinary
-        cloudinaryService.delete(existing.getPublicId());
-
-        // Subimos la nueva imagen
-        CloudinaryImage newImage = cloudinaryService.upload(newFile);
-
-        // Creamos la nueva entidad con los datos actualizados
-        Image updatedImage = UpdateImageDto.updateEntity(existing, newImage.getUrl(), newImage.getPublicId());
-
-        // Guardamos en la DB
-        Image savedImage = imageRepository.save(updatedImage);
-
         // Convertimos entidad a DTO para retornarlo
-        return ImageDto.fromEntity(savedImage);
+        return ImageDto.fromEntity(updateImageEntity(id, newFile));
     }
 
     public void delete(Integer id) throws IOException {

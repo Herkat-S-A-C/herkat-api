@@ -23,7 +23,7 @@ public class ImageController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public Image addImage(@RequestParam("file") MultipartFile file) throws IOException {
+    public ImageDto addImage(@RequestParam("file") MultipartFile file) throws IOException {
         return service.addImage(file);
     }
 
