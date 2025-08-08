@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpdateProductDto {
 
-    @Size(max = 50, message = "El nombre del productno no puede superar los 50 caracteres.")
+    @Size(max = 50, message = "El nombre del producto no puede superar los 50 caracteres.")
     private String name;
 
     private Integer typeId;
@@ -22,8 +22,6 @@ public class UpdateProductDto {
     private Integer capacity;
 
     private String description;
-
-    private String imageUrl;
 
     public static Product updateEntity(UpdateProductDto dto,
                                        Product existingProduct,

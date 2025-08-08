@@ -1,14 +1,11 @@
 package com.herkat.services;
 
-import com.herkat.dtos.image.CloudinaryImage;
-import com.herkat.dtos.image.NewImageDto;
 import com.herkat.dtos.product.NewProductDto;
 import com.herkat.dtos.product.ProductDto;
 import com.herkat.dtos.product.UpdateProductDto;
 import com.herkat.models.Image;
 import com.herkat.models.Product;
 import com.herkat.models.ProductType;
-import com.herkat.repositories.ImageRepository;
 import com.herkat.repositories.ProductRepository;
 import com.herkat.repositories.ProductTypeRepository;
 import com.herkat.validators.ProductValidator;
@@ -25,22 +22,16 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final ProductTypeRepository typeRepository;
-    private final ImageRepository imageRepository;
     private final ImageService imageService;
-    private final CloudinaryService cloudinaryService;
     private final ProductValidator validator;
 
     public ProductService(ProductRepository productRepository,
                           ProductTypeRepository typeRepository,
-                          ImageRepository imageRepository,
                           ImageService imageService,
-                          CloudinaryService cloudinaryService,
                           ProductValidator validator) {
         this.productRepository = productRepository;
         this.typeRepository = typeRepository;
-        this.imageRepository = imageRepository;
         this.imageService = imageService;
-        this.cloudinaryService = cloudinaryService;
         this.validator = validator;
     }
 
@@ -55,14 +46,14 @@ public class ProductService {
                         "Tipo de producto con ID: " + newProductDto.getTypeId() + " no encontrado."
                 ));
 
-        // Subimos la imagen a Cloudinary y la guardamos en la DB
-        Image newImage = imageService.addImage(image);
+        // Subimos la imagen a Cloudinary y a la guardamos en la DB
+        Image savedImage = imageService.addImageEntity(image);
 
-        // Convertimos el DTO a entidad
+        // Convertimos el DTO del producto a entidad
         Product newProduct = NewProductDto.toEntity(
                 newProductDto,
                 type,
-                newImage
+                savedImage
         );
 
         // Guardamos la entidad en la DB
@@ -101,7 +92,7 @@ public class ProductService {
 
         // Buscamos el tipo de producto por su ID si se proporcionó
         ProductType newType = null;
-        if(updateProductDto.getTypeId() != null) {
+        if (updateProductDto.getTypeId() != null) {
             // Buscamos el tipo
             newType = typeRepository.findById(updateProductDto.getTypeId())
                     .orElseThrow(() -> new NoSuchElementException(
@@ -111,21 +102,9 @@ public class ProductService {
 
         // Manejamos la nueva imagen
         Image newImageEntity = null;
-        if(newImage != null && !newImage.isEmpty()) {
-            // Eliminamos la imagen de Cloudinary
-            cloudinaryService.delete(existingProduct.getImage().getPublicId());
-
-            // Subimos la nueva imagen a Cloudinary
-            CloudinaryImage uploaded = cloudinaryService.upload(newImage);
-
-            // Creamos la nueva entidad de la imagen
-            Image imageEntity = NewImageDto.toEntity(
-                    uploaded.getUrl(),
-                    uploaded.getPublicId()
-            );
-
-            // Guardamos la nueva imagen en la DB
-            newImageEntity = imageRepository.save(imageEntity);
+        if (newImage != null && !newImage.isEmpty()) {
+            // Subimos y guardamos la nueva imagen en Cloudinary y la DB
+            newImageEntity = imageService.updateImageEntity(existingProduct.getImage().getId(), newImage);
         }
 
         // Creamos la entidad con los datos actualizados
@@ -144,14 +123,14 @@ public class ProductService {
 
     @Transactional
     public void delete(Integer id) throws IOException {
-        // Buscar el producto por su ID
+        // Buscamos el producto por su ID
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Producto con ID: " + id + " no encontrado."));
 
-        // Eliminamos la imagen de Cloudinary
-        cloudinaryService.delete(existingProduct.getImage().getPublicId());
+        // Eliminamos la imagen de Cloudinary y la DB
+        imageService.delete(existingProduct.getId());
 
-        // Eliminamos el producto de la DB (la imagen se elimina en cascada por "orphanRemoval = true")
+        // Eliminamos el producto de la DB
         productRepository.delete(existingProduct);
     }
 
