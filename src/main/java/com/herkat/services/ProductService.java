@@ -63,6 +63,7 @@ public class ProductService {
     }
 
     public List<ProductDto> findAll() {
+        // Buscamos todos los productos
         return productRepository.findAll()
                 .stream()
                 .map(ProductDto::fromEntity)
@@ -70,12 +71,14 @@ public class ProductService {
     }
 
     public ProductDto findById(Integer id) {
+        // Buscamos el producto por su ID
         return productRepository.findById(id)
                 .map(ProductDto::fromEntity)
                 .orElseThrow(() -> new NoSuchElementException("Producto con ID: " + id + " no encontrado."));
     }
 
     public ProductDto findByName(String name) {
+        // Buscamos el producto por su nombre
         return productRepository.findByNameIgnoreCase(name)
                 .map(ProductDto::fromEntity)
                 .orElseThrow(() -> new NoSuchElementException("Producto con nombre: " + name + " no encontrado."));
