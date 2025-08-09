@@ -59,11 +59,12 @@ public class MachineService {
         // Guardamos en la base de datos
         Machine savedMachine = machineRepository.save(newMachine);
 
-        // Convertimos la entidad a DTO y lo retornamos.
+        // Convertimos la entidad a DTO para retornarlo
         return MachineDto.fromEntity(savedMachine);
     }
 
     public List<MachineDto> findAll() {
+        // Buscamos todas las máquinas
         return machineRepository.findAll()
                 .stream()
                 .map(MachineDto::fromEntity)
@@ -71,12 +72,14 @@ public class MachineService {
     }
 
     public MachineDto findById(Integer id) {
+        // Buscamos la máquina por su ID
         return machineRepository.findById(id)
                 .map(MachineDto::fromEntity)
                 .orElseThrow(() -> new NoSuchElementException("Máquina con ID: " + id + " no encontrada."));
     }
 
     public MachineDto findByName(String name) {
+        // Buscamos la máquina por su nombre
         return machineRepository.findByNameIgnoreCase(name)
                 .map(MachineDto::fromEntity)
                 .orElseThrow(() -> new NoSuchElementException("Máquina con nombre: " + name + " no encontrada."));

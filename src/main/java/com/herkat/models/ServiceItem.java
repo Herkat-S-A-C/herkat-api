@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "machines")
-public class Machine {
+@Table(name = "service_items")
+public class ServiceItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +23,7 @@ public class Machine {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "type_id", nullable = false)
-    private MachineType type;
+    private ServiceItemType type;
 
     @Column(nullable = false)
     private String description;
@@ -40,9 +40,9 @@ public class Machine {
         registrationDate = LocalDateTime.now();
     }
 
-    public static Machine newMachine(String name, MachineType type, String description,
-                                     Image image, LocalDateTime registrationDate) {
-        return new Machine(
+    public static ServiceItem newServiceItem(String name, ServiceItemType type, String description,
+                                             Image image, LocalDateTime registrationDate) {
+        return new ServiceItem(
                 null,
                 name,
                 type,
@@ -51,6 +51,5 @@ public class Machine {
                 registrationDate
         );
     }
-
 
 }
