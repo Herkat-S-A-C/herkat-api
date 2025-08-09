@@ -7,15 +7,13 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 public class UpdateImageDto {
 
-    private Integer id;
-
     private MultipartFile image;
 
-    public static Image updateEntity(Image existing, String newUrl, String newPublicId) {
+    public static Image updateEntity(Image existingImage, String newUrl, String newPublicId) {
         return new Image(
-                existing.getId(),
-                newUrl != null ? newUrl : existing.getUrl(),
-                newPublicId != null ? newPublicId : existing.getPublicId()
+                existingImage.getId(),
+                newUrl != null ? newUrl : existingImage.getUrl(),
+                newPublicId != null ? newPublicId : existingImage.getPublicId()
         );
     }
 

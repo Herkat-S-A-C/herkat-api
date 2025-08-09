@@ -1,7 +1,7 @@
 package com.herkat.validators;
 
-import com.herkat.dtos.maintenanceType.NewServiceItemType;
-import com.herkat.dtos.maintenanceType.UpdateServiceItemTypeDto;
+import com.herkat.dtos.serviceItemType.NewServiceItemType;
+import com.herkat.dtos.serviceItemType.UpdateServiceItemTypeDto;
 import com.herkat.exceptions.BadRequestException;
 import com.herkat.exceptions.ConflictException;
 import com.herkat.repositories.ServiceItemTypeRepository;

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpdateMachineTypeDto {
 
-    @NotBlank(message = "El nombre del tipo de máquina no puede estar vacío.")
+    @NotBlank(message = "El nombre del tipo de máquina es obligatorio.")
     @Size(max = 50, message = "El nombre del tipo de máquina no puede estar vacío.")
     private String name;
 

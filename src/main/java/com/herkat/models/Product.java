@@ -26,7 +26,7 @@ public class Product {
     private ProductType type;
 
     @Column(nullable = false)
-    private Integer capacity;
+    private Double capacity;
 
     @Column(nullable = false)
     private String description;
@@ -43,7 +43,7 @@ public class Product {
         registrationDate = LocalDateTime.now();
     }
 
-    public static Product newProduct(String name, ProductType type, Integer capacity, String description,
+    public static Product newProduct(String name, ProductType type, Double capacity, String description,
                                      Image image, LocalDateTime registrationDate) {
         return new Product(
                 null,

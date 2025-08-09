@@ -21,7 +21,7 @@ public class NewProductDto {
     private Integer typeId;
 
     @NotNull(message = "La capacidad del producto es obligatoria.")
-    private Integer capacity;
+    private Double capacity;
 
     @NotBlank(message = "La descripción del producto es obligatoria.")
     private String description;

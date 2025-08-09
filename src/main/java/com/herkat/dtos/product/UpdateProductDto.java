@@ -19,7 +19,7 @@ public class UpdateProductDto {
 
     private Integer typeId;
 
-    private Integer capacity;
+    private Double capacity;
 
     private String description;
 

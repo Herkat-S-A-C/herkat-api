@@ -18,7 +18,7 @@ public class Machine {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 50)
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
