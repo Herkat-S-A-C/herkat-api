@@ -1,8 +1,8 @@
 package com.herkat.controllers;
 
-import com.herkat.dtos.maintenanceType.NewServiceItemType;
-import com.herkat.dtos.maintenanceType.ServiceItemTypeDto;
-import com.herkat.dtos.maintenanceType.UpdateServiceItemTypeDto;
+import com.herkat.dtos.serviceItemType.NewServiceItemType;
+import com.herkat.dtos.serviceItemType.ServiceItemTypeDto;
+import com.herkat.dtos.serviceItemType.UpdateServiceItemTypeDto;
 import com.herkat.services.ServiceItemTypeService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

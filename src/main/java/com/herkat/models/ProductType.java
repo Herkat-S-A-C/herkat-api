@@ -16,7 +16,7 @@ public class ProductType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 50)
     private String name;
 
     public static ProductType newProductType(String name) {

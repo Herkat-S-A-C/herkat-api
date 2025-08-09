@@ -16,7 +16,7 @@ public class MachineType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true, nullable = false, length = 50)
     private String name;
 
     public static MachineType newMachineType(String name) {

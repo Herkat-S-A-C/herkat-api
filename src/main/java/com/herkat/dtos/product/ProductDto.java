@@ -16,7 +16,7 @@ public class ProductDto {
 
     private String typeName;
 
-    private Integer capacity;
+    private Double capacity;
 
     private String description;
 
