@@ -7,6 +7,7 @@ import com.herkat.models.ProductType;
 import com.herkat.repositories.ProductTypeRepository;
 import com.herkat.validators.ProductTypeValidator;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -22,6 +23,7 @@ public class ProductTypeService {
         this.validator = validator;
     }
 
+    @Transactional
     public ProductTypeDto register(NewProductTypeDto requestDTO) {
         // Validamos las reglas de negocio antes de registrar
         validator.validateBeforeRegister(requestDTO);
@@ -45,21 +47,22 @@ public class ProductTypeService {
     }
 
     public ProductTypeDto findById(Integer id) {
-        // Buscar tipo de producto por su ID
+        // Buscamos tipo de producto por su ID
          return repository.findById(id)
                  .map(ProductTypeDto::fromEntity)
                  .orElseThrow(() -> new NoSuchElementException("Tipo de producto con ID: " + id + " no encontrado."));
     }
 
     public ProductTypeDto findByName(String name) {
-        // Buscar tipo de producto por su nombre
+        // Buscamos tipo de producto por su nombre
         return repository.findByNameIgnoreCase(name)
                 .map(ProductTypeDto::fromEntity)
                 .orElseThrow(() -> new NoSuchElementException("Tipo de producto con nombre: " + name + " no encontrado."));
     }
 
+    @Transactional
     public ProductTypeDto update(Integer id, UpdateProductTypeDto updateProductTypeDto) {
-        // Validamos los datos antes de actualizar
+        // Validamos las reglas de negocio antes de actualizar
         validator.validateBeforeUpdate(id, updateProductTypeDto);
 
         // Buscamos el tipo de producto por su ID
@@ -76,6 +79,7 @@ public class ProductTypeService {
         return ProductTypeDto.fromEntity(savedType);
     }
 
+    @Transactional
     public void delete(Integer id) {
         // Buscamos el tipo de producto por su ID
         ProductType existingType = repository.findById(id)
