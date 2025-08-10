@@ -122,7 +122,7 @@ public class MachineService {
         // Guardamos la entidad en la base de datos
         Machine savedMachine = machineRepository.save(updatedMachine);
 
-        // Convertimos la entidad a DTO para retornalo
+        // Convertimos la entidad a DTO para retornarlo
         return MachineDto.fromEntity(savedMachine);
     }
 
