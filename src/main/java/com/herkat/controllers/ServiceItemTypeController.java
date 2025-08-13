@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/service-item-type")
+@RequestMapping("/api/v1/service-item-types")
 public class ServiceItemTypeController {
 
     private final ServiceItemTypeService service;
