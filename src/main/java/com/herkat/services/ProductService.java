@@ -130,10 +130,10 @@ public class ProductService {
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Producto con ID: " + id + " no encontrado."));
 
-        // Eliminamos la imagen de Cloudinary y la DB
-        imageService.delete(existingProduct.getId());
+        // Eliminamos la imagen de Cloudinary (pero no de la DB)
+        imageService.delete(existingProduct.getImage().getId());
 
-        // Eliminamos el producto de la DB
+        // Eliminamos el producto de la DB -> Hibernate elimina también la imagen de la DB
         productRepository.delete(existingProduct);
     }
 

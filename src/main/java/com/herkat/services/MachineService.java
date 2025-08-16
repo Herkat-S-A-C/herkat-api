@@ -132,10 +132,10 @@ public class MachineService {
         Machine existingMachine = machineRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Máquina con ID: " + id + " no encontrada."));
 
-        // Eliminamos la imagen de Cloudinary y la DB
+        // Eliminamos la imagen de Cloudinary (pero no de la DB)
         imageService.delete(existingMachine.getImage().getId());
 
-        // Eliminamos la máquina de la DB
+        // Eliminamos la máquina de la DB -> Hibernate elimina también la imagen de la DB
         machineRepository.delete(existingMachine);
     }
 
