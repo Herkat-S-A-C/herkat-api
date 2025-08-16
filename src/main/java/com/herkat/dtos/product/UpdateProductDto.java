@@ -23,6 +23,8 @@ public class UpdateProductDto {
 
     private String description;
 
+    private Boolean isFeatured;
+
     public static Product updateEntity(UpdateProductDto dto,
                                        Product existingProduct,
                                        ProductType newType,
@@ -34,6 +36,7 @@ public class UpdateProductDto {
                 dto.getCapacity() != null ? dto.getCapacity() : existingProduct.getCapacity(),
                 dto.getDescription() != null ? dto.getDescription() : existingProduct.getDescription(),
                 newImage != null ? newImage : existingProduct.getImage(),
+                dto.getIsFeatured() != null ? dto.getIsFeatured() : existingProduct.getIsFeatured(),
                 existingProduct.getRegistrationDate()
         );
     }

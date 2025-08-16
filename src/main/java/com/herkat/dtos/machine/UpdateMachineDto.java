@@ -20,6 +20,8 @@ public class UpdateMachineDto {
 
     private String description;
 
+    private Boolean isFeatured;
+
     public static Machine updateEntity(UpdateMachineDto dto,
                                        Machine existingMachine,
                                        MachineType newType,
@@ -30,6 +32,7 @@ public class UpdateMachineDto {
                 newType != null ? newType : existingMachine.getType(),
                 dto.getDescription() != null ? dto.getDescription() : existingMachine.getDescription(),
                 newImage != null ? newImage : existingMachine.getImage(),
+                dto.getIsFeatured() != null ? dto.getIsFeatured() : existingMachine.getIsFeatured(),
                 existingMachine.getRegistrationDate()
         );
     }

@@ -13,7 +13,7 @@ import lombok.*;
 @NoArgsConstructor
 public class NewProductDto {
 
-    @NotBlank(message = "El nombre del producto el obligatorio.")
+    @NotBlank(message = "El nombre del producto es obligatorio.")
     @Size(max = 50, message = "El producto no puede superar los 50 caracteres.")
     private String name;
 
@@ -26,6 +26,9 @@ public class NewProductDto {
     @NotBlank(message = "La descripción del producto es obligatoria.")
     private String description;
 
+    @NotNull(message = "Debe indicar si el producto es destacado o no.")
+    private Boolean isFeatured;
+
     public static Product toEntity(NewProductDto newProductDto, ProductType type, Image image) {
         return Product.newProduct(
                 newProductDto.getName(),
@@ -33,6 +36,7 @@ public class NewProductDto {
                 newProductDto.getCapacity(),
                 newProductDto.getDescription(),
                 image,
+                newProductDto.getIsFeatured(),
                 null
         );
     }

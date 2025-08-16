@@ -25,12 +25,16 @@ public class NewMachineDto {
     @NotBlank(message = "La descripción de la máquina es obligatoria.")
     private String description;
 
+    @NotNull(message = "Debe indicar si la máquina es destacado o no.")
+    private Boolean isFeatured;
+
     public static Machine toEntity(NewMachineDto newMachineDto, MachineType type, Image image) {
         return Machine.newMachine(
                 newMachineDto.getName(),
                 type,
                 newMachineDto.getDescription(),
                 image,
+                newMachineDto.getIsFeatured(),
                 null
         );
     }

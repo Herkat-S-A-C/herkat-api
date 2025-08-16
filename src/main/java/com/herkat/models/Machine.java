@@ -32,6 +32,9 @@ public class Machine {
     @JoinColumn(unique = true, nullable = false)
     private Image image;
 
+    @Column(name = "is_featured", nullable = false)
+    private Boolean isFeatured = false;
+
     @Column(name = "registration_date", nullable = false)
     private LocalDateTime registrationDate;
 
@@ -41,13 +44,14 @@ public class Machine {
     }
 
     public static Machine newMachine(String name, MachineType type, String description,
-                                     Image image, LocalDateTime registrationDate) {
+                                     Image image, Boolean isFeatured, LocalDateTime registrationDate) {
         return new Machine(
                 null,
                 name,
                 type,
                 description,
                 image,
+                isFeatured,
                 registrationDate
         );
     }
