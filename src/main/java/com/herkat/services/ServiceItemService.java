@@ -132,10 +132,10 @@ public class ServiceItemService {
         ServiceItem existingServiceItem = serviceItemRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Servicio con ID: " + id + " no encontrado."));
 
-        // Eliminamos la imagen de Cloudinary y la DB
+        // Eliminamos la imagen de Cloudinary (pero no de la DB)
         imageService.delete(existingServiceItem.getImage().getId());
 
-        // Eliminamos la máquina de la DB
+        // Eliminamos la máquina de la DB -> Hibernate elimina también la imagen de la DB
         serviceItemRepository.delete(existingServiceItem);
     }
 

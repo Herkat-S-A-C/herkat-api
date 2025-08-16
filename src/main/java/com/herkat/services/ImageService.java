@@ -92,8 +92,7 @@ public class ImageService {
         // Borramos la imagen de Cloudinary
         cloudinaryService.delete(image.getPublicId());
 
-        // Borramos la imagen de la base de datos
-        imageRepository.delete(image);
+        // ❌ Ya no borramos la imagen en la base de datos (eso lo hace Hibernate por cascade)
     }
 
 }
