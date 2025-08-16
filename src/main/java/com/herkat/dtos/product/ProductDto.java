@@ -22,6 +22,8 @@ public class ProductDto {
 
     private String imageUrl;
 
+    private Boolean isFeatured;
+
     public static ProductDto fromEntity(Product product) {
         return new ProductDto(
                 product.getId(),
@@ -29,7 +31,8 @@ public class ProductDto {
                 product.getType().getName(),
                 product.getCapacity(),
                 product.getDescription(),
-                product.getImage().getUrl()
+                product.getImage().getUrl(),
+                product.getIsFeatured()
         );
     }
 

@@ -18,13 +18,16 @@ public class MachineDto {
 
     private String imageUrl;
 
+    private Boolean isFeatured;
+
     public static MachineDto fromEntity(Machine machine) {
         return new MachineDto(
                 machine.getId(),
                 machine.getName(),
                 machine.getType().getName(),
                 machine.getDescription(),
-                machine.getImage().getUrl()
+                machine.getImage().getUrl(),
+                machine.getIsFeatured()
         );
     }
 

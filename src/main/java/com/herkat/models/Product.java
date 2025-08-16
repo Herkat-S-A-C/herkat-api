@@ -35,6 +35,9 @@ public class Product {
     @JoinColumn(unique = true, nullable = false)
     private Image image;
 
+    @Column(name = "is_featured", nullable = false)
+    private Boolean isFeatured = false;
+
     @Column(name = "registration_date", nullable = false)
     private LocalDateTime registrationDate;
 
@@ -44,7 +47,7 @@ public class Product {
     }
 
     public static Product newProduct(String name, ProductType type, Double capacity, String description,
-                                     Image image, LocalDateTime registrationDate) {
+                                     Image image, Boolean isFeatured, LocalDateTime registrationDate) {
         return new Product(
                 null,
                 name,
@@ -52,6 +55,7 @@ public class Product {
                 capacity,
                 description,
                 image,
+                isFeatured,
                 registrationDate
         );
     }

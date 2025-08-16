@@ -25,12 +25,16 @@ public class NewServiceItemDto {
     @NotBlank(message = "La descripción del servicio es obligatoria.")
     private String description;
 
+    @NotNull(message = "Debe indicar si el servicio es destacado o no.")
+    private Boolean isFeatured;
+
     public static ServiceItem toEntity(NewServiceItemDto newServiceItemDto, ServiceItemType type, Image image) {
         return ServiceItem.newServiceItem(
                 newServiceItemDto.getName(),
                 type,
                 newServiceItemDto.getDescription(),
                 image,
+                newServiceItemDto.getIsFeatured(),
                 null
         );
     }

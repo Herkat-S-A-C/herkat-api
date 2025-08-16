@@ -20,6 +20,8 @@ public class UpdateServiceItemDto {
 
     private String description;
 
+    private Boolean isFeatured;
+
     public static ServiceItem updateEntity(UpdateServiceItemDto dto,
                                            ServiceItem existingServiceItem,
                                            ServiceItemType newType,
@@ -30,6 +32,7 @@ public class UpdateServiceItemDto {
                 newType != null ? newType : existingServiceItem.getType(),
                 dto.getDescription() != null ? dto.getDescription() : existingServiceItem.getDescription(),
                 newImage != null ? newImage : existingServiceItem.getImage(),
+                dto.getIsFeatured() != null ? dto.getIsFeatured() : existingServiceItem.getIsFeatured(),
                 existingServiceItem.getRegistrationDate()
         );
     }

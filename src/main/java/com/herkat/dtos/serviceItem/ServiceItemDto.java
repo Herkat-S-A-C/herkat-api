@@ -18,13 +18,16 @@ public class ServiceItemDto {
 
     private String imageUrl;
 
+    private Boolean isFeatured;
+
     public static ServiceItemDto fromEntity(ServiceItem serviceItem) {
         return new ServiceItemDto(
                 serviceItem.getId(),
                 serviceItem.getName(),
                 serviceItem.getType().getName(),
                 serviceItem.getDescription(),
-                serviceItem.getImage().getUrl()
+                serviceItem.getImage().getUrl(),
+                serviceItem.getIsFeatured()
         );
     }
 
