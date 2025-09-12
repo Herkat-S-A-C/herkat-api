@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import software.amazon.awssdk.services.s3.endpoints.internal.Value;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +12,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table(name = "client")
-public class Cliente {
+
+public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -36,13 +36,13 @@ public class Cliente {
     @PrePersist
     public void prePersist() {createdAt = LocalDateTime.now();
     }
-    public static Cliente newClient(String name, String email, String phone, String address,  LocalDateTime createdAt) {
-        return new Cliente(
+    public static Client newClient(String name, String email, String phone, String address, LocalDateTime createdAt) {
+        return new Client(
                 null,
                 name,
                 email,
                 phone,
                 address,
-                LocalDateTime.now());
+                createdAt);
     }
 }
