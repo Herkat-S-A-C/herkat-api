@@ -28,12 +28,11 @@ public class Inventory {
     public void prePersist() {createdAt = LocalDateTime.now();
 
     }
-    public static Inventory newInventory(int stock,LocalDateTime createdAt) {
+    public static Inventory newInventory(int stock, LocalDateTime createdAt) {
         return new Inventory(
                 null,
                 stock,
                 createdAt);
-
     }
 }
 
