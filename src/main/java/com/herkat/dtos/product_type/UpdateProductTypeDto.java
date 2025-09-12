@@ -1,4 +1,4 @@
-package com.herkat.dtos.productType;
+package com.herkat.dtos.product_type;
 
 import com.herkat.models.ProductType;
 import jakarta.validation.constraints.NotBlank;
@@ -12,12 +12,11 @@ public class UpdateProductTypeDto {
     @Size(max = 50, message = "El nombre del tipo de producto no puede superar los 50 carácteres.")
     private String name;
 
-    public static ProductType updateEntity(UpdateProductTypeDto updateProductTypeDto,
+    public static ProductType updateEntity(UpdateProductTypeDto dto,
                                            ProductType productType) {
         return new ProductType(
                 productType.getId(),
-                updateProductTypeDto.getName() != null ?
-                        updateProductTypeDto.getName() : productType.getName()
+                dto.getName() != null && !dto.getName().isEmpty() ? dto.getName() : productType.getName()
         );
     }
 

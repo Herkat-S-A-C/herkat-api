@@ -1,8 +1,8 @@
 package com.herkat.services;
 
-import com.herkat.dtos.serviceItem.NewServiceItemDto;
-import com.herkat.dtos.serviceItem.ServiceItemDto;
-import com.herkat.dtos.serviceItem.UpdateServiceItemDto;
+import com.herkat.dtos.service_item.NewServiceItemDto;
+import com.herkat.dtos.service_item.ServiceItemDto;
+import com.herkat.dtos.service_item.UpdateServiceItemDto;
 import com.herkat.models.Image;
 import com.herkat.models.ServiceItem;
 import com.herkat.models.ServiceItemType;
@@ -46,7 +46,7 @@ public class ServiceItemService {
                         "Tipo de servicio con ID: " + newServiceItemDto.getTypeId() + " no encontrado."
                 ));
 
-        // Subimos la imagen a Cloudinary y la DB
+        // Subimos la imagen a S3 y la DB
         Image savedImage = imageService.addImageEntity(image);
 
         // Convertimos el DTO a entidad
@@ -63,6 +63,7 @@ public class ServiceItemService {
         return ServiceItemDto.fromEntity(savedServiceItem);
     }
 
+    @Transactional(readOnly = true)
     public List<ServiceItemDto> findAll() {
         // Buscamos todos los servicios
         return serviceItemRepository.findAll()
@@ -71,6 +72,7 @@ public class ServiceItemService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public ServiceItemDto findById(Integer id) {
         // Buscamos el servicio por su ID
         return serviceItemRepository.findById(id)
@@ -107,7 +109,7 @@ public class ServiceItemService {
         // Manejamos la nueva imagen
         Image newImageEntity = null;
         if(newImage != null && !newImage.isEmpty()) {
-            // Subimos y guardamos la imagen a Cloudinary y la DB
+            // Subimos y guardamos la imagen a S3 y la DB
             newImageEntity = imageService.updateImageEntity(existingServiceItem.getImage().getId(), newImage);
         }
 
@@ -132,7 +134,7 @@ public class ServiceItemService {
         ServiceItem existingServiceItem = serviceItemRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Servicio con ID: " + id + " no encontrado."));
 
-        // Eliminamos la imagen de Cloudinary (pero no de la DB)
+        // Eliminamos la imagen de S3 (pero no de la DB)
         imageService.delete(existingServiceItem.getImage().getId());
 
         // Eliminamos la máquina de la DB -> Hibernate elimina también la imagen de la DB

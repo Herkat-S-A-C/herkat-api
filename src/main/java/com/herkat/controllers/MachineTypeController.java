@@ -1,8 +1,8 @@
 package com.herkat.controllers;
 
-import com.herkat.dtos.machineType.MachineTypeDto;
-import com.herkat.dtos.machineType.NewMachineType;
-import com.herkat.dtos.machineType.UpdateMachineTypeDto;
+import com.herkat.dtos.machine_type.MachineTypeDto;
+import com.herkat.dtos.machine_type.NewMachineType;
+import com.herkat.dtos.machine_type.UpdateMachineTypeDto;
 import com.herkat.services.MachineTypeService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -20,19 +20,19 @@ public class MachineTypeController {
         this.service = service;
     }
 
-    @PostMapping
+    @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
     public MachineTypeDto register(@Valid @RequestBody NewMachineType newMachineType) {
         return service.register(newMachineType);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<MachineTypeDto> findAll() {
         return service.findAll();
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/{id}/details")
     @ResponseStatus(HttpStatus.OK)
     public MachineTypeDto findById(@PathVariable Integer id) {
         return service.findById(id);
@@ -44,14 +44,14 @@ public class MachineTypeController {
         return service.findByName(name);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
     public MachineTypeDto update(@PathVariable Integer id,
                                  @Valid @RequestBody UpdateMachineTypeDto updateMachineTypeDto) {
         return service.update(id, updateMachineTypeDto);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Integer id) {
         service.delete(id);

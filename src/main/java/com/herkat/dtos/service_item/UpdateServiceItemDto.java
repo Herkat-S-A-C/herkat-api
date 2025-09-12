@@ -1,4 +1,4 @@
-package com.herkat.dtos.serviceItem;
+package com.herkat.dtos.service_item;
 
 import com.herkat.models.Image;
 import com.herkat.models.ServiceItem;
@@ -28,12 +28,12 @@ public class UpdateServiceItemDto {
                                            Image newImage) {
         return new ServiceItem(
                 existingServiceItem.getId(),
-                dto.getName() != null ? dto.getName() : existingServiceItem.getName(),
+                dto.getName() != null && !dto.getName().isEmpty() ? dto.getName() : existingServiceItem.getName(),
                 newType != null ? newType : existingServiceItem.getType(),
-                dto.getDescription() != null ? dto.getDescription() : existingServiceItem.getDescription(),
+                dto.getDescription() != null && !dto.getDescription().isEmpty() ? dto.getDescription() : existingServiceItem.getDescription(),
                 newImage != null ? newImage : existingServiceItem.getImage(),
                 dto.getIsFeatured() != null ? dto.getIsFeatured() : existingServiceItem.getIsFeatured(),
-                existingServiceItem.getRegistrationDate()
+                existingServiceItem.getCreatedAt()
         );
     }
 

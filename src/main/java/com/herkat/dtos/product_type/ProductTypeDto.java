@@ -1,4 +1,4 @@
-package com.herkat.dtos.productType;
+package com.herkat.dtos.product_type;
 
 import com.herkat.models.ProductType;
 import lombok.AllArgsConstructor;

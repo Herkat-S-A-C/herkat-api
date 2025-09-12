@@ -35,16 +35,16 @@ public class ServiceItem {
     @Column(name = "is_featured", nullable = false)
     private Boolean isFeatured = false;
 
-    @Column(name = "registration_date", nullable = false)
-    private LocalDateTime registrationDate;
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
 
     @PrePersist
     public void prePersist() {
-        registrationDate = LocalDateTime.now();
+        createdAt = LocalDateTime.now();
     }
 
     public static ServiceItem newServiceItem(String name, ServiceItemType type, String description,
-                                             Image image, Boolean isFeatured, LocalDateTime registrationDate) {
+                                             Image image, Boolean isFeatured, LocalDateTime createdAt) {
         return new ServiceItem(
                 null,
                 name,
@@ -52,7 +52,7 @@ public class ServiceItem {
                 description,
                 image,
                 isFeatured,
-                registrationDate
+                createdAt
         );
     }
 

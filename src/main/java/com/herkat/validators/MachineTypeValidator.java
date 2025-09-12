@@ -1,7 +1,7 @@
 package com.herkat.validators;
 
-import com.herkat.dtos.machineType.NewMachineType;
-import com.herkat.dtos.machineType.UpdateMachineTypeDto;
+import com.herkat.dtos.machine_type.NewMachineType;
+import com.herkat.dtos.machine_type.UpdateMachineTypeDto;
 import com.herkat.exceptions.BadRequestException;
 import com.herkat.exceptions.ConflictException;
 import com.herkat.repositories.MachineTypeRepository;

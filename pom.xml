@@ -28,6 +28,15 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
+	<!-- Repositories -->
+	<repositories>
+		<!-- Redgate repository needed for Flyway 11.x dependencies -->
+		<repository>
+			<id>redgate</id>
+			<url>https://download.red-gate.com/maven/release</url>
+		</repository>
+	</repositories>
+
 	<!-- Dependencies -->
 	<dependencies>
 
@@ -57,7 +66,14 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.5.0</version>
+			<version>42.7.3</version>
+		</dependency>
+
+		<!-- Flyway -->
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+			<version>9.22.3</version>
 		</dependency>
 
 		<!-- Lombok -->
@@ -72,18 +88,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
-		</dependency>
-
-		<!-- Cloudinary -->
-		<dependency>
-			<groupId>com.cloudinary</groupId>
-			<artifactId>cloudinary-http5</artifactId>
-			<version>2.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.cloudinary</groupId>
-			<artifactId>cloudinary-taglib</artifactId>
-			<version>2.0.0</version>
 		</dependency>
 
 		<!-- Dotenv -->
@@ -106,11 +110,11 @@
 			<version>2.7.0</version>
 		</dependency>
 
-		<!-- FIX Vulnerabilidad CVE-2025-48924 (Cloudinary dependency) -->
+		<!-- AWS -->
 		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-lang3</artifactId>
-			<version>3.18.0</version>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>s3</artifactId>
+			<version>2.20.162</version> <!-- usa una versión reciente -->
 		</dependency>
 
 	</dependencies>
@@ -118,9 +122,21 @@
 	<!-- Build Configuration -->
 	<build>
 		<resources>
+			<!-- Resources without filtering -->
 			<resource>
 				<directory>src/main/resources</directory>
-				<filtering>true</filtering> <!-- Reemplaza ${DB_URL} y demás -->
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>application.properties</exclude>
+				</excludes>
+			</resource>
+			<!-- Application properties with filtering -->
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>application.properties</include>
+				</includes>
 			</resource>
 		</resources>
 

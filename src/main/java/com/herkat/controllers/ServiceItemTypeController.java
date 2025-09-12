@@ -1,8 +1,8 @@
 package com.herkat.controllers;
 
-import com.herkat.dtos.serviceItemType.NewServiceItemType;
-import com.herkat.dtos.serviceItemType.ServiceItemTypeDto;
-import com.herkat.dtos.serviceItemType.UpdateServiceItemTypeDto;
+import com.herkat.dtos.service_item_type.NewServiceItemType;
+import com.herkat.dtos.service_item_type.ServiceItemTypeDto;
+import com.herkat.dtos.service_item_type.UpdateServiceItemTypeDto;
 import com.herkat.services.ServiceItemTypeService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -20,19 +20,19 @@ public class ServiceItemTypeController {
         this.service = service;
     }
 
-    @PostMapping
+    @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
     public ServiceItemTypeDto register(@RequestBody @Valid NewServiceItemType newServiceItemType) {
         return service.register(newServiceItemType);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<ServiceItemTypeDto> findAll() {
         return service.findAll();
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/{id}/details")
     @ResponseStatus(HttpStatus.OK)
     public ServiceItemTypeDto findById(@PathVariable Integer id) {
         return service.findById(id);
@@ -44,14 +44,14 @@ public class ServiceItemTypeController {
         return service.findByName(name);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ServiceItemTypeDto update(@PathVariable Integer id,
                                      @RequestBody @Valid UpdateServiceItemTypeDto updateServiceItemTypeDto) {
         return service.update(id, updateServiceItemTypeDto);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Integer id) {
         service.delete(id);

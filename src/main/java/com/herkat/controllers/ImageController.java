@@ -1,7 +1,6 @@
 package com.herkat.controllers;
 
 import com.herkat.dtos.image.ImageDto;
-import com.herkat.models.Image;
 import com.herkat.services.ImageService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,32 +20,32 @@ public class ImageController {
         this.service = service;
     }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(path = "/new", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ImageDto addImage(@RequestParam("file") MultipartFile file) throws IOException {
         return service.addImage(file);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<ImageDto> findAll() {
         return service.findAll();
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/{id}/details")
     @ResponseStatus(HttpStatus.OK)
     public ImageDto findById(@PathVariable Integer id) {
         return service.findById(id);
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "/update/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ImageDto updateImage(@PathVariable Integer id,
                                 @RequestParam("file") MultipartFile newFile) throws IOException {
-        return service.update(id, newFile);
+        return service.updateImage(id, newFile);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteImage(@PathVariable Integer id) throws IOException {
         service.delete(id);

@@ -25,20 +25,20 @@ public class Banner {
     @JoinColumn(unique = true, nullable = false)
     private Image image;
 
-    @Column(name = "registration_date", nullable = false)
-    private LocalDateTime registrationDate;
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
 
     @PrePersist
     public void prePersist() {
-        registrationDate = LocalDateTime.now();
+        createdAt = LocalDateTime.now();
     }
 
-    public static Banner newBanner(String name, Image image, LocalDateTime registrationDate) {
+    public static Banner newBanner(String name, Image image, LocalDateTime createdAt) {
         return new Banner(
                 null,
                 name,
                 image,
-                registrationDate
+                createdAt
         );
     }
 

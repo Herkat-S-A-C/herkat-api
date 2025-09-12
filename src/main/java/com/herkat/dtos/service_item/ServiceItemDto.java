@@ -1,4 +1,4 @@
-package com.herkat.dtos.serviceItem;
+package com.herkat.dtos.service_item;
 
 import com.herkat.models.ServiceItem;
 import lombok.AllArgsConstructor;

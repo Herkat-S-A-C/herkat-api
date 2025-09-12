@@ -11,10 +11,10 @@ public class NewImageDto {
     @NotNull(message = "La imagen es obligatoria.")
     private MultipartFile image;
 
-    public static Image toEntity(String url, String publicId) {
+    public static Image toEntity(String url, String s3Key) {
         return Image.newImage(
                 url,
-                publicId);
+                s3Key);
     }
 
 }

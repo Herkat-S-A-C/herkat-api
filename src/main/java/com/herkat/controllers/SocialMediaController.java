@@ -1,7 +1,7 @@
 package com.herkat.controllers;
 
-import com.herkat.dtos.socialMedia.SocialMediaDto;
-import com.herkat.dtos.socialMedia.UpdateSocialMediaDto;
+import com.herkat.dtos.social_media.SocialMediaDto;
+import com.herkat.dtos.social_media.UpdateSocialMediaDto;
 import com.herkat.models.SocialMediaType;
 import com.herkat.services.SocialMediaService;
 import jakarta.validation.Valid;
@@ -20,14 +20,14 @@ public class SocialMediaController {
         this.service = service;
     }
 
-    @PutMapping("/{type}")
+    @PutMapping("/update/{type}")
     @ResponseStatus(HttpStatus.OK)
     public SocialMediaDto update(@PathVariable SocialMediaType type,
                                  @Valid @RequestBody UpdateSocialMediaDto updateSocialMediaDto) {
         return service.update(type, updateSocialMediaDto);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<SocialMediaDto> findAll() {
         return service.findAll();

@@ -1,4 +1,4 @@
-package com.herkat.dtos.socialMedia;
+package com.herkat.dtos.social_media;
 
 import com.herkat.models.SocialMedia;
 import jakarta.validation.constraints.NotBlank;
@@ -17,7 +17,7 @@ public class UpdateSocialMediaDto {
     public static SocialMedia updateEntity(UpdateSocialMediaDto dto, SocialMedia existing) {
         return new SocialMedia(
                 existing.getId(),
-                dto.getUrl() != null ? dto.getUrl() : existing.getUrl(),
+                dto.getUrl() != null && !dto.getUrl().isEmpty() ? dto.getUrl() : existing.getUrl(),
                 existing.getType()
         );
     }

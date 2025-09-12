@@ -1,8 +1,8 @@
 package com.herkat.controllers;
 
-import com.herkat.dtos.serviceItem.NewServiceItemDto;
-import com.herkat.dtos.serviceItem.ServiceItemDto;
-import com.herkat.dtos.serviceItem.UpdateServiceItemDto;
+import com.herkat.dtos.service_item.NewServiceItemDto;
+import com.herkat.dtos.service_item.ServiceItemDto;
+import com.herkat.dtos.service_item.UpdateServiceItemDto;
 import com.herkat.services.ServiceItemService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -23,20 +23,20 @@ public class ServiceItemController {
         this.service = service;
     }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(path = "/new", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ServiceItemDto register(@ModelAttribute @Valid NewServiceItemDto newServiceItemDto,
                                    @RequestPart("image") MultipartFile image) throws IOException {
         return service.register(newServiceItemDto, image);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<ServiceItemDto> findAll() {
         return service.findAll();
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/{id}/details")
     @ResponseStatus(HttpStatus.OK)
     public ServiceItemDto findById(@PathVariable Integer id) {
         return service.findById(id);
@@ -48,7 +48,7 @@ public class ServiceItemController {
         return service.findByName(name);
     }
 
-    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(value = "/update/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ServiceItemDto update(@PathVariable Integer id,
                                  @ModelAttribute @Valid UpdateServiceItemDto updateServiceItemDto,
@@ -56,7 +56,7 @@ public class ServiceItemController {
         return service.update(id, updateServiceItemDto, image);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Integer id) throws IOException {
         service.delete(id);

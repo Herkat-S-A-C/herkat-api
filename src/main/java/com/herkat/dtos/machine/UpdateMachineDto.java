@@ -28,12 +28,12 @@ public class UpdateMachineDto {
                                        Image newImage) {
         return new Machine(
                 existingMachine.getId(),
-                dto.getName() != null ? dto.getName() : existingMachine.getName(),
+                dto.getName() != null && !dto.getName().isEmpty() ? dto.getName() : existingMachine.getName(),
                 newType != null ? newType : existingMachine.getType(),
-                dto.getDescription() != null ? dto.getDescription() : existingMachine.getDescription(),
+                dto.getDescription() != null && !dto.getDescription().isEmpty() ? dto.getDescription() : existingMachine.getDescription(),
                 newImage != null ? newImage : existingMachine.getImage(),
                 dto.getIsFeatured() != null ? dto.getIsFeatured() : existingMachine.getIsFeatured(),
-                existingMachine.getRegistrationDate()
+                existingMachine.getCreatedAt()
         );
     }
 

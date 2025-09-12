@@ -1,12 +1,11 @@
 package com.herkat.controllers;
 
-import com.herkat.dtos.productType.NewProductTypeDto;
-import com.herkat.dtos.productType.ProductTypeDto;
-import com.herkat.dtos.productType.UpdateProductTypeDto;
+import com.herkat.dtos.product_type.NewProductTypeDto;
+import com.herkat.dtos.product_type.ProductTypeDto;
+import com.herkat.dtos.product_type.UpdateProductTypeDto;
 import com.herkat.services.ProductTypeService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,19 +20,19 @@ public class ProductTypeController {
         this.service = service;
     }
 
-    @PostMapping
+    @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
     public ProductTypeDto register(@Valid @RequestBody NewProductTypeDto requestDTO) {
         return service.register(requestDTO);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<ProductTypeDto> findAll() {
         return service.findAll();
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/{id}/details")
     @ResponseStatus(HttpStatus.OK)
     public ProductTypeDto findById(@PathVariable Integer id) {
         return service.findById(id);
@@ -45,14 +44,14 @@ public class ProductTypeController {
         return service.findByName(name);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ProductTypeDto update(@PathVariable Integer id,
                                  @Valid @RequestBody UpdateProductTypeDto updateProductTypeDto) {
         return service.update(id, updateProductTypeDto);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Integer id) {
         service.delete(id);

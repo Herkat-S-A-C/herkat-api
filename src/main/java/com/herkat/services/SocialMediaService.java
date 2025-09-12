@@ -1,12 +1,13 @@
 package com.herkat.services;
 
-import com.herkat.dtos.socialMedia.SocialMediaDto;
-import com.herkat.dtos.socialMedia.UpdateSocialMediaDto;
+import com.herkat.dtos.social_media.SocialMediaDto;
+import com.herkat.dtos.social_media.UpdateSocialMediaDto;
 import com.herkat.models.SocialMedia;
 import com.herkat.models.SocialMediaType;
 import com.herkat.repositories.SocialMediaRepository;
 import com.herkat.validators.SocialMediaValidator;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -22,6 +23,7 @@ public class SocialMediaService {
         this.validator = validator;
     }
 
+    @Transactional
     public SocialMediaDto update(SocialMediaType type, UpdateSocialMediaDto updateSocialMediaDto) {
         // Validamos las reglas de negocio antes de actualizar
         validator.validateBeforeUpdate(updateSocialMediaDto);
@@ -40,6 +42,7 @@ public class SocialMediaService {
         return SocialMediaDto.fromEntity(savedSocialMedia);
     }
 
+    @Transactional(readOnly = true)
     public List<SocialMediaDto> findAll() {
         // Buscamos todas las redes sociales
         return repository.findAll()
