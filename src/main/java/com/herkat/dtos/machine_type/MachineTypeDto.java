@@ -1,4 +1,4 @@
-package com.herkat.dtos.machineType;
+package com.herkat.dtos.machine_type;
 
 import com.herkat.models.MachineType;
 import lombok.AllArgsConstructor;

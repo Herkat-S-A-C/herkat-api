@@ -20,14 +20,14 @@ public class Image {
     @Column(unique = true, nullable = false)
     private String url;
 
-    @Column(name = "public_id", unique = true, nullable = false)
-    private String publicId;
+    @Column(name = "s3_key", unique = true, nullable = false)
+    private String s3Key;
 
-    public static Image newImage(String url, String publicId) {
+    public static Image newImage(String url, String s3Key) {
         return new Image(
                 null,
                 url,
-                publicId);
+                s3Key);
     }
 
 }

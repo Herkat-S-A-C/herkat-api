@@ -1,8 +1,8 @@
 package com.herkat.services;
 
-import com.herkat.dtos.serviceItemType.NewServiceItemType;
-import com.herkat.dtos.serviceItemType.ServiceItemTypeDto;
-import com.herkat.dtos.serviceItemType.UpdateServiceItemTypeDto;
+import com.herkat.dtos.service_item_type.NewServiceItemType;
+import com.herkat.dtos.service_item_type.ServiceItemTypeDto;
+import com.herkat.dtos.service_item_type.UpdateServiceItemTypeDto;
 import com.herkat.models.ServiceItemType;
 import com.herkat.repositories.ServiceItemTypeRepository;
 import com.herkat.validators.ServiceItemTypeValidator;
@@ -38,6 +38,7 @@ public class ServiceItemTypeService {
         return ServiceItemTypeDto.fromEntity(savedType);
     }
 
+    @Transactional(readOnly = true)
     public List<ServiceItemTypeDto> findAll() {
         // Buscamos todos los tipos de servicio
         return repository.findAll()
@@ -46,6 +47,7 @@ public class ServiceItemTypeService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public ServiceItemTypeDto findById(Integer id) {
         // Buscamos el tipo de servicio por su ID
         return repository.findById(id)

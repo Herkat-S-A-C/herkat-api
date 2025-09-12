@@ -9,11 +9,11 @@ public class UpdateImageDto {
 
     private MultipartFile image;
 
-    public static Image updateEntity(Image existingImage, String newUrl, String newPublicId) {
+    public static Image updateEntity(Image existingImage, String newUrl, String newS3Key) {
         return new Image(
                 existingImage.getId(),
-                newUrl != null ? newUrl : existingImage.getUrl(),
-                newPublicId != null ? newPublicId : existingImage.getPublicId()
+                newUrl != null && !newUrl.isEmpty() ? newUrl : existingImage.getUrl(),
+                newS3Key != null && !newS3Key.isEmpty() ? newS3Key : existingImage.getS3Key()
         );
     }
 

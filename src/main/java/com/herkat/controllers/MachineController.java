@@ -23,20 +23,20 @@ public class MachineController {
         this.service = service;
     }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(path = "/new", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public MachineDto register(@ModelAttribute @Valid NewMachineDto newMachineDto,
                                @RequestPart("image") MultipartFile image) throws IOException {
         return service.register(newMachineDto, image);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<MachineDto> findAll() {
         return service.findAll();
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/{id}/details")
     @ResponseStatus(HttpStatus.OK)
     public MachineDto findById(@PathVariable Integer id) {
         return service.findById(id);
@@ -48,7 +48,7 @@ public class MachineController {
         return service.findByName(name);
     }
 
-    @PutMapping(path = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(path = "/update/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public MachineDto update(@PathVariable Integer id,
                              @ModelAttribute @Valid UpdateMachineDto updateMachineDto,
@@ -56,7 +56,7 @@ public class MachineController {
         return service.update(id, updateMachineDto, image);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Integer id) throws IOException {
         service.delete(id);

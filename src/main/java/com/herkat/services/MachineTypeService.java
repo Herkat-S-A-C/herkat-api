@@ -1,12 +1,13 @@
 package com.herkat.services;
 
-import com.herkat.dtos.machineType.MachineTypeDto;
-import com.herkat.dtos.machineType.NewMachineType;
-import com.herkat.dtos.machineType.UpdateMachineTypeDto;
+import com.herkat.dtos.machine_type.MachineTypeDto;
+import com.herkat.dtos.machine_type.NewMachineType;
+import com.herkat.dtos.machine_type.UpdateMachineTypeDto;
 import com.herkat.models.MachineType;
 import com.herkat.repositories.MachineTypeRepository;
 import com.herkat.validators.MachineTypeValidator;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -22,6 +23,7 @@ public class MachineTypeService {
         this.validator = validator;
     }
 
+    @Transactional
     public MachineTypeDto register(NewMachineType newMachineType) {
         // Validamos las reglas de negocio antes de registrar
         validator.validateBeforeRegister(newMachineType);
@@ -36,6 +38,7 @@ public class MachineTypeService {
         return MachineTypeDto.fromEntity(savedType);
     }
 
+    @Transactional(readOnly = true)
     public List<MachineTypeDto> findAll() {
         // Buscamos todos los tipos de máquina
         return repository.findAll()
@@ -44,6 +47,7 @@ public class MachineTypeService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public MachineTypeDto findById(Integer id) {
         // Buscar tipo de máquina por su ID
         return repository.findById(id)
@@ -58,6 +62,7 @@ public class MachineTypeService {
                 .orElseThrow(() -> new NoSuchElementException("Tipo de máquina con nombre: " + name + " no encontrada."));
     }
 
+    @Transactional
     public MachineTypeDto update(Integer id, UpdateMachineTypeDto updateMachineTypeDto) {
         // Validamos las reglas de negocio antes de actualizar
         validator.validateBeforeUpdate(id, updateMachineTypeDto);
@@ -76,6 +81,7 @@ public class MachineTypeService {
         return MachineTypeDto.fromEntity(savedType);
     }
 
+    @Transactional
     public void delete(Integer id) {
         // Buscamos el tipo de máquina por su ID
         MachineType existingType = repository.findById(id)

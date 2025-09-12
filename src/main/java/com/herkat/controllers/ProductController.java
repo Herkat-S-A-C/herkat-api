@@ -23,20 +23,20 @@ public class ProductController {
         this.service = service;
     }
 
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(path = "/new", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ProductDto register(@ModelAttribute @Valid NewProductDto newProductDto,
                                @RequestPart("image") MultipartFile image) throws IOException {
         return service.register(newProductDto, image);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<ProductDto> findAll() {
         return service.findAll();
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/{id}/details")
     @ResponseStatus(HttpStatus.OK)
     public ProductDto findById(@PathVariable Integer id) {
         return service.findById(id);
@@ -48,7 +48,7 @@ public class ProductController {
         return service.findByName(name);
     }
 
-    @PutMapping(path = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PutMapping(path = "/update/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ProductDto update(@PathVariable Integer id,
                              @ModelAttribute @Valid UpdateProductDto updateProductDto,
@@ -56,7 +56,7 @@ public class ProductController {
         return service.update(id, updateProductDto, image);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Integer id) throws IOException {
         service.delete(id);

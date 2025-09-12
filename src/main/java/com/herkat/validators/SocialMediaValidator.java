@@ -1,6 +1,6 @@
 package com.herkat.validators;
 
-import com.herkat.dtos.socialMedia.UpdateSocialMediaDto;
+import com.herkat.dtos.social_media.UpdateSocialMediaDto;
 import com.herkat.exceptions.BadRequestException;
 import org.springframework.stereotype.Component;
 

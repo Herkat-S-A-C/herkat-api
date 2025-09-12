@@ -20,9 +20,9 @@ public class UpdateBannerDto {
                                       Image newImage) {
         return new Banner(
                 existingBanner.getId(),
-                dto.getName() != null ? dto.getName() : existingBanner.getName(),
+                dto.getName() != null && !dto.getName().isEmpty() ? dto.getName() : existingBanner.getName(),
                 newImage != null ? newImage : existingBanner.getImage(),
-                existingBanner.getRegistrationDate()
+                existingBanner.getCreatedAt()
         );
     }
 

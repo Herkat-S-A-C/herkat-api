@@ -31,13 +31,13 @@ public class UpdateProductDto {
                                        Image newImage) {
         return new Product(
                 existingProduct.getId(),
-                dto.getName() != null ? dto.getName() : existingProduct.getName(),
+                dto.getName() != null && !dto.getName().isEmpty() ? dto.getName() : existingProduct.getName(),
                 newType != null ? newType : existingProduct.getType(),
                 dto.getCapacity() != null ? dto.getCapacity() : existingProduct.getCapacity(),
-                dto.getDescription() != null ? dto.getDescription() : existingProduct.getDescription(),
+                dto.getDescription() != null && !dto.getDescription().isEmpty() ? dto.getDescription() : existingProduct.getDescription(),
                 newImage != null ? newImage : existingProduct.getImage(),
                 dto.getIsFeatured() != null ? dto.getIsFeatured() : existingProduct.getIsFeatured(),
-                existingProduct.getRegistrationDate()
+                existingProduct.getCreatedAt()
         );
     }
 

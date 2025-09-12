@@ -1,8 +1,8 @@
 package com.herkat.services;
 
-import com.herkat.dtos.productType.NewProductTypeDto;
-import com.herkat.dtos.productType.ProductTypeDto;
-import com.herkat.dtos.productType.UpdateProductTypeDto;
+import com.herkat.dtos.product_type.NewProductTypeDto;
+import com.herkat.dtos.product_type.ProductTypeDto;
+import com.herkat.dtos.product_type.UpdateProductTypeDto;
 import com.herkat.models.ProductType;
 import com.herkat.repositories.ProductTypeRepository;
 import com.herkat.validators.ProductTypeValidator;
@@ -38,6 +38,7 @@ public class ProductTypeService {
         return ProductTypeDto.fromEntity(savedProductType);
     }
 
+    @Transactional(readOnly = true)
     public List<ProductTypeDto> findAll() {
         // Buscamos todos los tipos de producto
         return repository.findAll()
@@ -46,6 +47,7 @@ public class ProductTypeService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public ProductTypeDto findById(Integer id) {
         // Buscamos tipo de producto por su ID
          return repository.findById(id)

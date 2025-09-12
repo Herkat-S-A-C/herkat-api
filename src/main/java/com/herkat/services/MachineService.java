@@ -46,7 +46,7 @@ public class MachineService {
                         "Tipo de máquina con ID: " + newMachineDto.getTypeId() + " no encontrada."
                 ));
 
-        // Subimos la imagen a Cloudinary y a la DB
+        // Subimos la imagen a S3 y a la DB
         Image savedImage = imageService.addImageEntity(image);
 
         // Convertimos el DTO a entidad
@@ -63,6 +63,7 @@ public class MachineService {
         return MachineDto.fromEntity(savedMachine);
     }
 
+    @Transactional(readOnly = true)
     public List<MachineDto> findAll() {
         // Buscamos todas las máquinas
         return machineRepository.findAll()
@@ -71,6 +72,7 @@ public class MachineService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public MachineDto findById(Integer id) {
         // Buscamos la máquina por su ID
         return machineRepository.findById(id)
@@ -107,7 +109,7 @@ public class MachineService {
         // Manejamos la nueva imagen
         Image newImageEntity = null;
         if(newImage != null && !newImage.isEmpty()) {
-            // Subimos y guardamos la imagen en Cloudinary y la DB
+            // Subimos y guardamos la imagen en S3 y la DB
             newImageEntity = imageService.updateImageEntity(existingMachine.getImage().getId(), newImage);
         }
 
@@ -132,7 +134,7 @@ public class MachineService {
         Machine existingMachine = machineRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Máquina con ID: " + id + " no encontrada."));
 
-        // Eliminamos la imagen de Cloudinary (pero no de la DB)
+        // Eliminamos la imagen de S3 (pero no de la DB)
         imageService.delete(existingMachine.getImage().getId());
 
         // Eliminamos la máquina de la DB -> Hibernate elimina también la imagen de la DB

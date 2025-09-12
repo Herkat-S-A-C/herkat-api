@@ -1,4 +1,4 @@
-package com.herkat.dtos.socialMedia;
+package com.herkat.dtos.social_media;
 
 import com.herkat.models.SocialMedia;
 import lombok.AllArgsConstructor;

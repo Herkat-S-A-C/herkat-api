@@ -35,7 +35,7 @@ public class BannerService {
         // Validamos las reglas de negocio antes de registrar
         bannerValidator.validateBeforeRegister(newBannerDto);
 
-        // Subimos la imagen a Cloudinary y a la DB
+        // Subimos la imagen a S3 y a la DB
         Image savedImage = imageService.addImageEntity(image);
 
         // Convertimos el DTO a entidad
@@ -51,6 +51,7 @@ public class BannerService {
         return BannerDto.fromEntity(savedBanner);
     }
 
+    @Transactional(readOnly = true)
     public List<BannerDto> findAll() {
         // Buscamos todos los banners
         return bannerRepository.findAll()
@@ -59,6 +60,7 @@ public class BannerService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public BannerDto findById(Integer id) {
         // Buscamos el banner por su ID
         return bannerRepository.findById(id)
@@ -85,7 +87,7 @@ public class BannerService {
         // Manejamos la nueva imagen
         Image newImageEntity = null;
         if(newImage != null && !newImage.isEmpty()) {
-            // Subimos y guardamos la imagen en Cloudinary y la DB
+            // Subimos y guardamos la imagen en S3 y la DB
             newImageEntity = imageService.updateImageEntity(existingBanner.getImage().getId(), newImage);
         }
 
@@ -109,7 +111,7 @@ public class BannerService {
         Banner existingBanner = bannerRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Banner con ID: " + id + " no encontrado."));
 
-        // Eliminamos la imagen de Cloudinary y la DB
+        // Eliminamos la imagen de S3 y la DB
         imageService.delete(existingBanner.getImage().getId());
 
         // Eliminamos la máquina de la DB

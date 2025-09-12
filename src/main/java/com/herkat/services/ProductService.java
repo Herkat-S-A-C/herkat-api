@@ -46,7 +46,7 @@ public class ProductService {
                         "Tipo de producto con ID: " + newProductDto.getTypeId() + " no encontrado."
                 ));
 
-        // Subimos la imagen a Cloudinary y a la guardamos en la DB
+        // Subimos la imagen a S3 y a la guardamos en la DB
         Image savedImage = imageService.addImageEntity(image);
 
         // Convertimos el DTO del producto a entidad
@@ -62,6 +62,7 @@ public class ProductService {
         return ProductDto.fromEntity(savedProduct);
     }
 
+    @Transactional(readOnly = true)
     public List<ProductDto> findAll() {
         // Buscamos todos los productos
         return productRepository.findAll()
@@ -70,6 +71,7 @@ public class ProductService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
     public ProductDto findById(Integer id) {
         // Buscamos el producto por su ID
         return productRepository.findById(id)
@@ -106,7 +108,7 @@ public class ProductService {
         // Manejamos la nueva imagen
         Image newImageEntity = null;
         if (newImage != null && !newImage.isEmpty()) {
-            // Subimos y guardamos la nueva imagen en Cloudinary y la DB
+            // Subimos y guardamos la nueva imagen en S3 y la DB
             newImageEntity = imageService.updateImageEntity(existingProduct.getImage().getId(), newImage);
         }
 
@@ -130,7 +132,7 @@ public class ProductService {
         Product existingProduct = productRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Producto con ID: " + id + " no encontrado."));
 
-        // Eliminamos la imagen de Cloudinary (pero no de la DB)
+        // Eliminamos la imagen de S3 (pero no de la DB)
         imageService.delete(existingProduct.getImage().getId());
 
         // Eliminamos el producto de la DB -> Hibernate elimina también la imagen de la DB

@@ -12,13 +12,13 @@ public class ImageDto {
 
     private String url;
 
-    private String publicId;
+    private String s3Key;
 
     public static ImageDto fromEntity(Image image) {
         return new ImageDto(
                 image.getId(),
                 image.getUrl(),
-                image.getPublicId()
+                image.getS3Key()
         );
     }
 
