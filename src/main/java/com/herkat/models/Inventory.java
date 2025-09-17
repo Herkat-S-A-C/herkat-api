@@ -29,10 +29,10 @@ public class Inventory {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public static Inventory newInventory(Integer stock, LocalDateTime updateAt){  //inicializar nuevo registro de inventario
+    public static Inventory newInventory(Integer stock, LocalDateTime updatedAt){  //inicializar nuevo registro de inventario
         return new Inventory(
                 null,
                    stock,
-                   updateAt);
+                   updatedAt);
     }
 }
