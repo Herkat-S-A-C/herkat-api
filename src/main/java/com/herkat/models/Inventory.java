@@ -15,20 +15,24 @@ import java.time.LocalDateTime;
 public class Inventory {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY)   //ID autogenerado
+    @GeneratedValue(strategy = GenerationType.IDENTITY)   //ID autogenerado
     private Integer id;
 
     @Column(nullable = false)   //los datos ingresados no pueden ser nulos
     private Integer stock;
 
-    private LocalDateTime updateAt;   //fecha y hora de ultima actualizacion
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;   //fecha y hora de ultima actualizacion
 
     @PrePersist
     protected void prePersist(){                 //actualizar día
-        this.updateAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
-    public static Inventory newInventory(Integer stock, LocalDateTime updateAt){      //inicializar nuevo registro de inventario
-        return new Inventory(null, stock, updateAt);
+    public static Inventory newInventory(Integer stock, LocalDateTime updateAt){  //inicializar nuevo registro de inventario
+        return new Inventory(
+                null,
+                   stock,
+                   updateAt);
     }
 }
