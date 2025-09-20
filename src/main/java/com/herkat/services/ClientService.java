@@ -26,7 +26,7 @@ public class ClientService {
     }
 
     @Transactional
-    public ClientDto register(NewClientDto newClientDto) throws IOException {
+    public ClientDto register(NewClientDto newClientDto){
         // Validamos las reglas de negocio antes de registrar
         validator.validateBeforeRegister(newClientDto);
 
@@ -59,7 +59,7 @@ public class ClientService {
     }
 
     @Transactional
-    public ClientDto update(Integer id, UpdateClientDto updateClientDto) throws IOException {
+    public ClientDto update(Integer id, UpdateClientDto updateClientDto){
         // Validamos las reglas de negocio antes de actualizar
         validator.validateBeforeUpdate(id, updateClientDto);
 
@@ -80,7 +80,7 @@ public class ClientService {
     }
 
     @Transactional
-    public void delete(Integer id) throws IOException {
+    public void delete(Integer id){
         // Buscamos el cliente por su ID
         Client existingClient = clientRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("Cliente con ID: " + id + " no encontrado."));
