@@ -39,9 +39,6 @@ public class ClientValidator {
     }
 
     public void validateBeforeUpdate(Integer id, UpdateClientDto dto) {
-        if(dto.getEmail() == null|| dto.getEmail().isBlank())  {
-            throw new BadRequestException("El email del cliente no puede estar vacío.");
-        }
 
         if(EMAIL_PATTERN.matcher(dto.getEmail()).matches()) {
             throw new BadRequestException("El formato del email no es válido.");

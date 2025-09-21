@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/products")
+@RequestMapping("/api/v1/clients")
 public class ClientController {
 
-    private final ClientController service;
+    private final ClientService service;
 
     public ClientController(ClientService service) {
         this.service = service;
@@ -38,7 +38,6 @@ public class ClientController {
         return service.findById(id);
     }
 
-    
     @GetMapping("/email/{email}")
     @ResponseStatus(HttpStatus.OK)
     public ClientDto findByEmail(@PathVariable String email) {
