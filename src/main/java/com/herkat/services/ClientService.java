@@ -80,6 +80,8 @@ public class ClientService {
     }
 
     @Transactional
+
+    @Transactional
     public void delete(Integer id){
         // Buscamos el cliente por su ID
         Client existingClient = clientRepository.findById(id)
