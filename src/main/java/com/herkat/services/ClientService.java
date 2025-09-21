@@ -86,6 +86,7 @@ public class ClientService {
                 .map(ClientDto::fromEntity)
                 .orElseThrow(() -> new NoSuchElementException("Cliente con Email: " + email + " no encontrado."));
     }
+
     @Transactional
     public void delete(Integer id){
         // Buscamos el cliente por su ID
