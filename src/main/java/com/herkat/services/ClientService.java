@@ -79,6 +79,14 @@ public class ClientService {
         return ClientDto.fromEntity(savedClient);
     }
 
+    @Transactional(readOnly = true)
+    public ClientDto findByEmail(String email) {
+        // Buscamos el cliente por su email
+        return clientRepository.findByEmail(email)
+                .map(ClientDto::fromEntity)
+                .orElseThrow(() -> new NoSuchElementException("Cliente con Email: " + email + " no encontrado."));
+    }
+
     @Transactional
     public void delete(Integer id){
         // Buscamos el cliente por su ID
