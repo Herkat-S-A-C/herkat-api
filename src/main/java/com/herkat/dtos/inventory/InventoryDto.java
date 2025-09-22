@@ -1,4 +1,4 @@
-package inventory;
+package com.herkat.dtos.inventory;
 
 import com.herkat.models.Inventory;
 import lombok.AllArgsConstructor;

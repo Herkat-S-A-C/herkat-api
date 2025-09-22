@@ -38,12 +38,6 @@ public class ClientController {
         return service.findById(id);
     }
 
-    @GetMapping("/email/{email}")
-    @ResponseStatus(HttpStatus.OK)
-    public ClientDto findByEmail(@PathVariable String email) {
-        return service.findByEmail(email);
-    }
-
     @PutMapping(path = "/update/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ClientDto update(@PathVariable Integer id,
