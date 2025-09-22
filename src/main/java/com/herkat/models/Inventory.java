@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "inventory")
+@Table(name = "com/herkat/dtos/inventory")
 public class Inventory {
 
     @Id

@@ -1,8 +1,6 @@
-package inventory;
+package com.herkat.dtos.inventory;
 
-import com.herkat.dtos.client.UpdateClientDto;
 import com.herkat.models.Inventory;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
