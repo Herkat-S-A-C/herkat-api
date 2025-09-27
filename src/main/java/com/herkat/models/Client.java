@@ -36,13 +36,14 @@ public class Client {
     @PrePersist
     public void prePersist() {createdAt = LocalDateTime.now();
     }
-    public static Client newClient(String name, String email, String phone, String address, LocalDateTime createdAt) {
+    public static Client newClient(String name, String email, String phone, String address) {
         return new Client(
                 null,
                 name,
                 email,
                 phone,
                 address,
-                createdAt);
+                null
+        );
     }
 }

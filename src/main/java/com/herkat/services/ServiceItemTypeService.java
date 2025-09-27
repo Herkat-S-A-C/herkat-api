@@ -1,8 +1,10 @@
 package com.herkat.services;
 
-import com.herkat.dtos.service_item_type.NewServiceItemType;
+import com.herkat.dtos.service_item_type.NewServiceItemTypeDto;
 import com.herkat.dtos.service_item_type.ServiceItemTypeDto;
 import com.herkat.dtos.service_item_type.UpdateServiceItemTypeDto;
+import com.herkat.exceptions.ErrorMessage;
+import com.herkat.exceptions.HerkatException;
 import com.herkat.models.ServiceItemType;
 import com.herkat.repositories.ServiceItemTypeRepository;
 import com.herkat.validators.ServiceItemTypeValidator;
@@ -24,12 +26,12 @@ public class ServiceItemTypeService {
     }
 
     @Transactional
-    public ServiceItemTypeDto register(NewServiceItemType newServiceItemType) {
+    public ServiceItemTypeDto register(NewServiceItemTypeDto newServiceItemTypeDto) {
         // Validamos las reglas de negocio antes de registrar
-        validator.validateBeforeRegister(newServiceItemType);
+        validator.validateNameUniqueness(newServiceItemTypeDto.getName());
 
         // Convertimos el DTO a entidad
-        ServiceItemType newType = NewServiceItemType.toEntity(newServiceItemType);
+        ServiceItemType newType = NewServiceItemTypeDto.toEntity(newServiceItemTypeDto);
 
         // Guardamos en la base de datos
         ServiceItemType savedType = repository.save(newType);
@@ -52,24 +54,24 @@ public class ServiceItemTypeService {
         // Buscamos el tipo de servicio por su ID
         return repository.findById(id)
                 .map(ServiceItemTypeDto::fromEntity)
-                .orElseThrow(() -> new NoSuchElementException("Tipo de servicio con ID: " + id + " no encontrado."));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.SERVICE_ITEM_TYPE_NOT_FOUND));
     }
 
     public ServiceItemTypeDto findByName(String name) {
         // Buscamos el tipo de servicio por su nombre
         return repository.findByNameIgnoreCase(name)
                 .map(ServiceItemTypeDto::fromEntity)
-                .orElseThrow(() -> new NoSuchElementException("Tipo de servicio con nombre: " + name + " no encontrado."));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.SERVICE_ITEM_TYPE_NOT_FOUND));
     }
 
     @Transactional
     public ServiceItemTypeDto update(Integer id, UpdateServiceItemTypeDto updateServiceItemTypeDto) {
         // Validamos las reglas de negocio antes de actualizar
-        validator.validateBeforeUpdate(id, updateServiceItemTypeDto);
+        validator.validateNameOnUpdate(id, updateServiceItemTypeDto.getName());
 
         // Buscamos el tipo de servicio por su ID
         ServiceItemType existingType = repository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Tipo de servicio con ID: " + id + " no encontrado."));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.SERVICE_ITEM_TYPE_NOT_FOUND));
 
         // Creamos la nueva instancia con los campos actualizados
         ServiceItemType updatedType = UpdateServiceItemTypeDto.updateEntity(updateServiceItemTypeDto, existingType);
@@ -85,7 +87,7 @@ public class ServiceItemTypeService {
     public void delete(Integer id) {
         // Buscamos el tipo de servicio por su ID
         ServiceItemType existingType = repository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Tipo de servicio con ID: " + id + " no encontrado."));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.SERVICE_ITEM_TYPE_NOT_FOUND));
 
         // Eliminamos el tipo de servicio de la base de datos
         repository.delete(existingType);

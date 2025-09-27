@@ -3,6 +3,8 @@ package com.herkat.services;
 import com.herkat.dtos.banner.BannerDto;
 import com.herkat.dtos.banner.NewBannerDto;
 import com.herkat.dtos.banner.UpdateBannerDto;
+import com.herkat.exceptions.ErrorMessage;
+import com.herkat.exceptions.HerkatException;
 import com.herkat.models.Banner;
 import com.herkat.models.Image;
 import com.herkat.repositories.BannerRepository;
@@ -33,7 +35,7 @@ public class BannerService {
     @Transactional
     public BannerDto register(NewBannerDto newBannerDto, MultipartFile image) throws IOException {
         // Validamos las reglas de negocio antes de registrar
-        bannerValidator.validateBeforeRegister(newBannerDto);
+        bannerValidator.validateNameUniqueness(newBannerDto.getName());
 
         // Subimos la imagen a S3 y a la DB
         Image savedImage = imageService.addImageEntity(image);
@@ -65,24 +67,17 @@ public class BannerService {
         // Buscamos el banner por su ID
         return bannerRepository.findById(id)
                 .map(BannerDto::fromEntity)
-                .orElseThrow(() -> new NoSuchElementException("Banner con ID: " + id + " no encontrado."));
-    }
-
-    public BannerDto findByName(String name) {
-        // Buscamos el banner por su nombre
-        return bannerRepository.findByNameIgnoreCase(name)
-                .map(BannerDto::fromEntity)
-                .orElseThrow(() -> new NoSuchElementException("Banner con nombre: " + name + " no encontrado."));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.BANNER_NOT_FOUND));
     }
 
     @Transactional
     public BannerDto update(Integer id, UpdateBannerDto updateBannerDto, MultipartFile newImage) throws IOException {
         // Validamos las reglas de negocio antes de actualizar
-        bannerValidator.validateBeforeUpdate(id, updateBannerDto);
+        bannerValidator.validateNameOnUpdate(id, updateBannerDto.getName());
 
         // Buscamos el banner por su ID
         Banner existingBanner = bannerRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Banner con ID: " + id + " no encontrado."));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.BANNER_NOT_FOUND));
 
         // Manejamos la nueva imagen
         Image newImageEntity = null;
@@ -109,7 +104,7 @@ public class BannerService {
     public void delete(Integer id) throws IOException {
         // Buscamos el banner por su ID
         Banner existingBanner = bannerRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Banner con ID: " + id + " no encontrado."));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.BANNER_NOT_FOUND));
 
         // Eliminamos la imagen de S3 y la DB
         imageService.delete(existingBanner.getImage().getId());

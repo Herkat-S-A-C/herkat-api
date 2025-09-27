@@ -3,6 +3,8 @@ package com.herkat.services;
 import com.herkat.dtos.product.NewProductDto;
 import com.herkat.dtos.product.ProductDto;
 import com.herkat.dtos.product.UpdateProductDto;
+import com.herkat.exceptions.ErrorMessage;
+import com.herkat.exceptions.HerkatException;
 import com.herkat.models.Image;
 import com.herkat.models.Product;
 import com.herkat.models.ProductType;
@@ -38,15 +40,13 @@ public class ProductService {
     @Transactional
     public ProductDto register(NewProductDto newProductDto, MultipartFile image) throws IOException {
         // Validamos las reglas de negocio antes de registrar
-        validator.validateBeforeRegister(newProductDto);
+        validator.validateNameUniqueness(newProductDto.getName());
 
         // Buscamos el tipo de producto por su ID
         ProductType type = typeRepository.findById(newProductDto.getTypeId())
-                .orElseThrow(() -> new NoSuchElementException(
-                        "Tipo de producto con ID: " + newProductDto.getTypeId() + " no encontrado."
-                ));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.PRODUCT_TYPE_NOT_FOUND));
 
-        // Subimos la imagen a S3 y a la guardamos en la DB
+        // Subimos la imagen a S3 y la guardamos en la DB
         Image savedImage = imageService.addImageEntity(image);
 
         // Convertimos el DTO del producto a entidad
@@ -76,33 +76,31 @@ public class ProductService {
         // Buscamos el producto por su ID
         return productRepository.findById(id)
                 .map(ProductDto::fromEntity)
-                .orElseThrow(() -> new NoSuchElementException("Producto con ID: " + id + " no encontrado."));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.PRODUCT_NOT_FOUND));
     }
 
     public ProductDto findByName(String name) {
         // Buscamos el producto por su nombre
         return productRepository.findByNameIgnoreCase(name)
                 .map(ProductDto::fromEntity)
-                .orElseThrow(() -> new NoSuchElementException("Producto con nombre: " + name + " no encontrado."));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.PRODUCT_NOT_FOUND));
     }
 
     @Transactional
     public ProductDto update(Integer id, UpdateProductDto updateProductDto, MultipartFile newImage) throws IOException {
         // Validamos las reglas de negocio antes de actualizar
-        validator.validateBeforeUpdate(id, updateProductDto);
+        validator.validateNameOnUpdate(id, updateProductDto.getName());
 
         // Buscamos el producto por su ID
         Product existingProduct = productRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Producto con ID: " + id + " no encontrado."));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.PRODUCT_NOT_FOUND));
 
         // Buscamos el tipo de producto por su ID si se proporcionó
         ProductType newType = null;
         if (updateProductDto.getTypeId() != null) {
             // Buscamos el tipo
             newType = typeRepository.findById(updateProductDto.getTypeId())
-                    .orElseThrow(() -> new NoSuchElementException(
-                            "Tipo de producto con ID: " + updateProductDto.getTypeId() + " no encontrado."
-                    ));
+                    .orElseThrow(() -> new HerkatException(ErrorMessage.PRODUCT_TYPE_NOT_FOUND));
         }
 
         // Manejamos la nueva imagen
@@ -130,7 +128,7 @@ public class ProductService {
     public void delete(Integer id) throws IOException {
         // Buscamos el producto por su ID
         Product existingProduct = productRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Producto con ID: " + id + " no encontrado."));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.PRODUCT_NOT_FOUND));
 
         // Eliminamos la imagen de S3 (pero no de la DB)
         imageService.delete(existingProduct.getImage().getId());

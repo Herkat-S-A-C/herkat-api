@@ -1,9 +1,7 @@
 package com.herkat.validators;
 
-import com.herkat.dtos.banner.NewBannerDto;
-import com.herkat.dtos.banner.UpdateBannerDto;
-import com.herkat.exceptions.BadRequestException;
-import com.herkat.exceptions.ConflictException;
+import com.herkat.exceptions.ErrorMessage;
+import com.herkat.exceptions.HerkatException;
 import com.herkat.repositories.BannerRepository;
 import org.springframework.stereotype.Component;
 
@@ -16,25 +14,17 @@ public class BannerValidator {
         this.repository = repository;
     }
 
-    public void validateBeforeRegister(NewBannerDto dto) {
-        if(dto.getName() == null || dto.getName().isBlank()) {
-            throw new BadRequestException("El nombre del banner no puede estar vacío.");
-        }
-
-        if(repository.findByNameIgnoreCase(dto.getName()).isPresent()) {
-            throw new ConflictException("El nombre del banner ya existe.");
+    public void validateNameUniqueness(String name) {
+        if(repository.findByNameIgnoreCase(name).isPresent()) {
+            throw new HerkatException(ErrorMessage.DUPLICATE_RECORD);
         }
     }
 
-    public void validateBeforeUpdate(Integer id, UpdateBannerDto dto) {
-        if(dto.getName() == null || dto.getName().isBlank()) {
-            throw new BadRequestException("El nombre del banner no puede estar vacío.");
-        }
-
-        repository.findByNameIgnoreCase(dto.getName())
+    public void validateNameOnUpdate(Integer bannerId, String newName) {
+        repository.findByNameIgnoreCase(newName)
                 .ifPresent(existingType -> {
-                    if(!existingType.getId().equals(id)) {
-                        throw new ConflictException("El nombre del banner ya existe.");
+                    if(!existingType.getId().equals(bannerId)) {
+                        throw new HerkatException(ErrorMessage.DUPLICATE_RECORD);
                     }
                 });
     }

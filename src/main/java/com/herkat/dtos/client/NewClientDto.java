@@ -35,8 +35,7 @@ public class NewClientDto {
                 newClientDto.getName(),
                 newClientDto.getEmail(),
                 newClientDto.getPhone(),
-                newClientDto.getAddress(),
-                null
+                newClientDto.getAddress()
         );
     }
 }

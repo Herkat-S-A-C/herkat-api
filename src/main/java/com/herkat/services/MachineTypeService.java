@@ -1,8 +1,10 @@
 package com.herkat.services;
 
 import com.herkat.dtos.machine_type.MachineTypeDto;
-import com.herkat.dtos.machine_type.NewMachineType;
+import com.herkat.dtos.machine_type.NewMachineTypeDto;
 import com.herkat.dtos.machine_type.UpdateMachineTypeDto;
+import com.herkat.exceptions.ErrorMessage;
+import com.herkat.exceptions.HerkatException;
 import com.herkat.models.MachineType;
 import com.herkat.repositories.MachineTypeRepository;
 import com.herkat.validators.MachineTypeValidator;
@@ -10,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 public class MachineTypeService {
@@ -24,12 +25,12 @@ public class MachineTypeService {
     }
 
     @Transactional
-    public MachineTypeDto register(NewMachineType newMachineType) {
+    public MachineTypeDto register(NewMachineTypeDto newMachineTypeDto) {
         // Validamos las reglas de negocio antes de registrar
-        validator.validateBeforeRegister(newMachineType);
+        validator.validateNameUniqueness(newMachineTypeDto.getName());
 
         // Convertimos el DTO a entidad
-        MachineType newType = NewMachineType.toEntity(newMachineType);
+        MachineType newType = NewMachineTypeDto.toEntity(newMachineTypeDto);
 
         // Guardamos el nuevo tipo en la base de datos
         MachineType savedType = repository.save(newType);
@@ -52,24 +53,24 @@ public class MachineTypeService {
         // Buscar tipo de máquina por su ID
         return repository.findById(id)
                 .map(MachineTypeDto::fromEntity)
-                .orElseThrow(() -> new NoSuchElementException("Tipo de máquina con ID: " + id + " no encontrada."));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.MACHINE_TYPE_NOT_FOUND));
     }
 
     public MachineTypeDto findByName(String name) {
         // Buscar tipo de máquina por su nombre
         return repository.findByNameIgnoreCase(name)
                 .map(MachineTypeDto::fromEntity)
-                .orElseThrow(() -> new NoSuchElementException("Tipo de máquina con nombre: " + name + " no encontrada."));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.MACHINE_TYPE_NOT_FOUND));
     }
 
     @Transactional
     public MachineTypeDto update(Integer id, UpdateMachineTypeDto updateMachineTypeDto) {
         // Validamos las reglas de negocio antes de actualizar
-        validator.validateBeforeUpdate(id, updateMachineTypeDto);
+        validator.validateNameOnUpdate(id, updateMachineTypeDto.getName());
 
         // Buscamos el tipo de máquina por su ID
         MachineType existingType = repository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Tipo de máquina con ID: " + id + " no encontrada."));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.MACHINE_TYPE_NOT_FOUND));
 
         // Convertimos el DTO a entidad
         MachineType updatedType = UpdateMachineTypeDto.updateEntity(updateMachineTypeDto, existingType);
@@ -85,7 +86,7 @@ public class MachineTypeService {
     public void delete(Integer id) {
         // Buscamos el tipo de máquina por su ID
         MachineType existingType = repository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Tipo de máquina no encontrada."));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.MACHINE_TYPE_NOT_FOUND));
 
         // Eliminamos el tipo de máquina de la base de datos
         repository.delete(existingType);

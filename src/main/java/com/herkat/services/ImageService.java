@@ -5,6 +5,8 @@ import com.herkat.dtos.image.ImageDto;
 import com.herkat.dtos.image.NewImageDto;
 import com.herkat.dtos.image.S3File;
 import com.herkat.dtos.image.UpdateImageDto;
+import com.herkat.exceptions.ErrorMessage;
+import com.herkat.exceptions.HerkatException;
 import com.herkat.models.Image;
 import com.herkat.repositories.ImageRepository;
 import org.springframework.stereotype.Service;
@@ -45,7 +47,7 @@ public class ImageService {
     protected Image updateImageEntity(Integer id, MultipartFile newFile) throws IOException {
         // Buscamos la imagen por su ID
         Image existing = imageRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Imagen con ID: " + id + " no encontrada."));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.IMAGE_NOT_FOUND));
 
         // Borramos la imagen anterior en S3
         s3Service.deleteFile(existing.getS3Key());
@@ -83,7 +85,7 @@ public class ImageService {
         // Buscamos la imágen por su ID
         return imageRepository.findById(id)
                 .map(ImageDto::fromEntity)
-                .orElseThrow(() -> new NoSuchElementException("Imagen con ID: " + id + " no encontrada."));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.IMAGE_NOT_FOUND));
     }
 
     @Transactional
@@ -96,7 +98,7 @@ public class ImageService {
     public void delete(Integer id) throws IOException {
         // Buscamos la imagen por su ID
         Image image = imageRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Imagen no encontrada"));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.IMAGE_NOT_FOUND));
 
         // Borramos la imagen de S3
         s3Service.deleteFile(image.getS3Key());

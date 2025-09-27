@@ -10,14 +10,14 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class NewServiceItemType {
+public class NewServiceItemTypeDto {
 
     @NotBlank(message = "El nombre del tipo de servicio es obligatorio.")
     @Size(max = 50, message = "El nombre del tipo de servicio no puede superar los 50 caracteres.")
     private String name;
 
-    public static ServiceItemType toEntity(NewServiceItemType newServiceItemType) {
-        return ServiceItemType.newServiceItemType(newServiceItemType.getName());
+    public static ServiceItemType toEntity(NewServiceItemTypeDto newServiceItemTypeDto) {
+        return ServiceItemType.newServiceItemType(newServiceItemTypeDto.getName());
     }
 
 }
