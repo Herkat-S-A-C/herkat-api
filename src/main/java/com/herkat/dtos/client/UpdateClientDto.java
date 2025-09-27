@@ -25,9 +25,9 @@ public class UpdateClientDto {
         return new Client(
                 existingClient.getId(),
                 dto.getName() != null && !dto.getName().isEmpty() ? dto.getName() : existingClient.getName(),
-                dto.getEmail() != null ? dto.getEmail() : existingClient.getEmail(),
+                dto.getEmail() != null && !dto.getEmail().isEmpty() ? dto.getEmail() : existingClient.getEmail(),
                 dto.getPhone() != null && !dto.getPhone().isEmpty() ? dto.getPhone() : existingClient.getPhone(),
-                dto.getAddress() != null ? dto.getAddress() : existingClient.getAddress(),
+                dto.getAddress() != null && !dto.getAddress().isEmpty() ? dto.getAddress() : existingClient.getAddress(),
                 existingClient.getCreatedAt()
         );
     }
