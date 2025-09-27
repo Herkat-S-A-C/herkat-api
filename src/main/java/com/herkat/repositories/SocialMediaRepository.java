@@ -11,4 +11,7 @@ import java.util.Optional;
 public interface SocialMediaRepository extends JpaRepository<SocialMedia, Integer> {
 
     Optional<SocialMedia> findByType(SocialMediaType type);
+
+    Optional<SocialMedia> findByUrl(String url);
+
 }

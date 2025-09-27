@@ -1,9 +1,7 @@
 package com.herkat.validators;
 
-import com.herkat.dtos.service_item.NewServiceItemDto;
-import com.herkat.dtos.service_item.UpdateServiceItemDto;
-import com.herkat.exceptions.BadRequestException;
-import com.herkat.exceptions.ConflictException;
+import com.herkat.exceptions.ErrorMessage;
+import com.herkat.exceptions.HerkatException;
 import com.herkat.repositories.ServiceItemRepository;
 import org.springframework.stereotype.Component;
 
@@ -16,29 +14,17 @@ public class ServiceItemValidator {
         this.repository = repository;
     }
 
-    public void validateBeforeRegister(NewServiceItemDto dto) {
-        if(dto.getName() == null || dto.getName().isBlank()) {
-            throw new BadRequestException("El nombre del servicio no puede estas vacío.");
-        }
-
-        if(dto.getTypeId() == null) {
-            throw new BadRequestException("El tipo de servicio no puede estar vacío.");
-        }
-
-        if(dto.getDescription() == null || dto.getDescription().isBlank()) {
-            throw new BadRequestException("La descripción del servicio no puede estar vacía.");
-        }
-
-        if(repository.findByNameIgnoreCase(dto.getName()).isPresent()) {
-            throw new ConflictException("El nombre del servicio ya existe.");
+    public void validateNameUniqueness(String name) {
+        if(repository.findByNameIgnoreCase(name).isPresent()) {
+            throw new HerkatException(ErrorMessage.DUPLICATE_RECORD);
         }
     }
 
-    public void validateBeforeUpdate(Integer id, UpdateServiceItemDto dto) {
-        repository.findByNameIgnoreCase(dto.getName())
+    public void validateNameOnUpdate(Integer serviceItemId, String name) {
+        repository.findByNameIgnoreCase(name)
                 .ifPresent(existingServiceItem -> {
-                    if(existingServiceItem.getId().equals(id)) {
-                        throw new ConflictException("El nombre del servicio ya existe.");
+                    if(existingServiceItem.getId().equals(serviceItemId)) {
+                        throw new HerkatException(ErrorMessage.DUPLICATE_RECORD);
                     }
                 });
     }

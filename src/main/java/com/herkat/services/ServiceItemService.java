@@ -3,6 +3,8 @@ package com.herkat.services;
 import com.herkat.dtos.service_item.NewServiceItemDto;
 import com.herkat.dtos.service_item.ServiceItemDto;
 import com.herkat.dtos.service_item.UpdateServiceItemDto;
+import com.herkat.exceptions.ErrorMessage;
+import com.herkat.exceptions.HerkatException;
 import com.herkat.models.Image;
 import com.herkat.models.ServiceItem;
 import com.herkat.models.ServiceItemType;
@@ -38,13 +40,11 @@ public class ServiceItemService {
     @Transactional
     public ServiceItemDto register(NewServiceItemDto newServiceItemDto, MultipartFile image) throws IOException {
         // Validamos las reglas de negocio antes de registrar
-        serviceItemValidator.validateBeforeRegister(newServiceItemDto);
+        serviceItemValidator.validateNameUniqueness(newServiceItemDto.getName());
 
         // Buscamos el tipo de servicio por su ID
         ServiceItemType type = typeRepository.findById(newServiceItemDto.getTypeId())
-                .orElseThrow(() -> new NoSuchElementException(
-                        "Tipo de servicio con ID: " + newServiceItemDto.getTypeId() + " no encontrado."
-                ));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.SERVICE_ITEM_TYPE_NOT_FOUND));
 
         // Subimos la imagen a S3 y la DB
         Image savedImage = imageService.addImageEntity(image);
@@ -77,33 +77,31 @@ public class ServiceItemService {
         // Buscamos el servicio por su ID
         return serviceItemRepository.findById(id)
                 .map(ServiceItemDto::fromEntity)
-                .orElseThrow(() -> new NoSuchElementException("Servicio con ID: " + id + " no encontrado."));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.SERVICE_ITEM_NOT_FOUND));
     }
 
     public ServiceItemDto findByName(String name) {
         // Buscamos el servicio por su nombre
         return serviceItemRepository.findByNameIgnoreCase(name)
                 .map(ServiceItemDto::fromEntity)
-                .orElseThrow(() -> new NoSuchElementException("Servicio con nombre: " + name + " no encontrado."));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.SERVICE_ITEM_NOT_FOUND));
     }
 
     @Transactional
     public ServiceItemDto update(Integer id, UpdateServiceItemDto updateServiceItemDto, MultipartFile newImage) throws IOException {
         // Validamos las reglas de negocio antes de actualizar
-        serviceItemValidator.validateBeforeUpdate(id, updateServiceItemDto);
+        serviceItemValidator.validateNameOnUpdate(id, updateServiceItemDto.getName());
 
         // Buscamos el servicio por su ID
         ServiceItem existingServiceItem = serviceItemRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Servicio con ID: " + id + " no encontrado."));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.SERVICE_ITEM_NOT_FOUND));
 
         // Buscamos el tipo de servicio por su ID si se proporcionó
         ServiceItemType newType = null;
         if(updateServiceItemDto.getTypeId() != null) {
             // Buscamos el tipo
             newType = typeRepository.findById(updateServiceItemDto.getTypeId())
-                    .orElseThrow(() -> new NoSuchElementException(
-                            "Tipo de servicio con ID: " + updateServiceItemDto.getTypeId() + " no encontrado."
-                    ));
+                    .orElseThrow(() -> new HerkatException(ErrorMessage.SERVICE_ITEM_TYPE_NOT_FOUND));
         }
 
         // Manejamos la nueva imagen
@@ -132,7 +130,7 @@ public class ServiceItemService {
     public void delete(Integer id) throws IOException {
         // Buscamos el servicio por su ID
         ServiceItem existingServiceItem = serviceItemRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Servicio con ID: " + id + " no encontrado."));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.SERVICE_ITEM_NOT_FOUND));
 
         // Eliminamos la imagen de S3 (pero no de la DB)
         imageService.delete(existingServiceItem.getImage().getId());

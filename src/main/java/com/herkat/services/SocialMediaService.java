@@ -2,6 +2,8 @@ package com.herkat.services;
 
 import com.herkat.dtos.social_media.SocialMediaDto;
 import com.herkat.dtos.social_media.UpdateSocialMediaDto;
+import com.herkat.exceptions.ErrorMessage;
+import com.herkat.exceptions.HerkatException;
 import com.herkat.models.SocialMedia;
 import com.herkat.models.SocialMediaType;
 import com.herkat.repositories.SocialMediaRepository;
@@ -26,11 +28,11 @@ public class SocialMediaService {
     @Transactional
     public SocialMediaDto update(SocialMediaType type, UpdateSocialMediaDto updateSocialMediaDto) {
         // Validamos las reglas de negocio antes de actualizar
-        validator.validateBeforeUpdate(updateSocialMediaDto);
+        validator.validateUrlOnUpdate(type, updateSocialMediaDto.getUrl());
 
         // Buscamos la red social por su Tipo
         SocialMedia socialMedia = repository.findByType(type)
-                .orElseThrow(() -> new NoSuchElementException("No se encontró la red social: " + type));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.SOCIAL_MEDIA_NOT_FOUND));
 
         // Actualizamos los datos de la red social
         SocialMedia updatedSocialMedia = UpdateSocialMediaDto.updateEntity(updateSocialMediaDto, socialMedia);

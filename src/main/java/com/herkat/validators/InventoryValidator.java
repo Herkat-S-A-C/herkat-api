@@ -1,9 +1,7 @@
 package com.herkat.validators;
 
 import com.herkat.dtos.inventory.NewInventoryDto;
-import com.herkat.dtos.inventory.UpdateInventoryDto;
 import com.herkat.exceptions.BadRequestException;
-import com.herkat.exceptions.ConflictException;
 import com.herkat.repositories.InventoryRepository;
 import org.springframework.stereotype.Component;
 

@@ -1,7 +1,7 @@
 package com.herkat.controllers;
 
 import com.herkat.dtos.machine_type.MachineTypeDto;
-import com.herkat.dtos.machine_type.NewMachineType;
+import com.herkat.dtos.machine_type.NewMachineTypeDto;
 import com.herkat.dtos.machine_type.UpdateMachineTypeDto;
 import com.herkat.services.MachineTypeService;
 import jakarta.validation.Valid;
@@ -22,8 +22,8 @@ public class MachineTypeController {
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public MachineTypeDto register(@Valid @RequestBody NewMachineType newMachineType) {
-        return service.register(newMachineType);
+    public MachineTypeDto register(@Valid @RequestBody NewMachineTypeDto newMachineTypeDto) {
+        return service.register(newMachineTypeDto);
     }
 
     @GetMapping("/all")

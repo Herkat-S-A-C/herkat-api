@@ -3,13 +3,14 @@ package com.herkat.services;
 import com.herkat.dtos.client.ClientDto;
 import com.herkat.dtos.client.NewClientDto;
 import com.herkat.dtos.client.UpdateClientDto;
+import com.herkat.exceptions.ErrorMessage;
+import com.herkat.exceptions.HerkatException;
 import com.herkat.models.Client;
 import com.herkat.repositories.ClientRepository;
 import com.herkat.validators.ClientValidator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -28,12 +29,10 @@ public class ClientService {
     @Transactional
     public ClientDto register(NewClientDto newClientDto){
         // Validamos las reglas de negocio antes de registrar
-        validator.validateBeforeRegister(newClientDto);
+        validator.validateEmailUniqueness(newClientDto.getEmail());
 
         // Convertimos el DTO del cliente a entidad
-        Client newClient = NewClientDto.toEntity(
-                newClientDto
-        );
+        Client newClient = NewClientDto.toEntity(newClientDto);
 
         // Guardamos la entidad en la DB
         Client savedClient = clientRepository.save(newClient);
@@ -55,22 +54,23 @@ public class ClientService {
         // Buscamos el cliente por su ID
         return clientRepository.findById(id)
                 .map(ClientDto::fromEntity)
-                .orElseThrow(() -> new NoSuchElementException("Cliente con ID: " + id + " no encontrado."));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.CLIENT_NOT_FOUND));
     }
 
     @Transactional
     public ClientDto update(Integer id, UpdateClientDto updateClientDto){
         // Validamos las reglas de negocio antes de actualizar
-        validator.validateBeforeUpdate(id, updateClientDto);
+        validator.validateEmailOnUpdate(id, updateClientDto.getEmail());
 
         // Buscamos el cliente por su ID
         Client existingClient = clientRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Cliente con ID: " + id + " no encontrado."));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.CLIENT_NOT_FOUND));
 
         // Creamos la entidad con los datos actualizados
         Client updatedClient = UpdateClientDto.updateEntity(
                 updateClientDto,
-                existingClient);
+                existingClient
+        );
 
         // Guardamos la entidad actualizada en la DB
         Client savedClient = clientRepository.save(updatedClient);
@@ -83,7 +83,7 @@ public class ClientService {
     public void delete(Integer id){
         // Buscamos el cliente por su ID
         Client existingClient = clientRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Cliente con ID: " + id + " no encontrado."));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.CLIENT_NOT_FOUND));
 
         // Eliminamos el cliente de la DB
         clientRepository.delete(existingClient);

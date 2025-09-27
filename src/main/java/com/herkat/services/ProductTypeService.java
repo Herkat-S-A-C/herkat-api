@@ -3,6 +3,8 @@ package com.herkat.services;
 import com.herkat.dtos.product_type.NewProductTypeDto;
 import com.herkat.dtos.product_type.ProductTypeDto;
 import com.herkat.dtos.product_type.UpdateProductTypeDto;
+import com.herkat.exceptions.ErrorMessage;
+import com.herkat.exceptions.HerkatException;
 import com.herkat.models.ProductType;
 import com.herkat.repositories.ProductTypeRepository;
 import com.herkat.validators.ProductTypeValidator;
@@ -24,12 +26,12 @@ public class ProductTypeService {
     }
 
     @Transactional
-    public ProductTypeDto register(NewProductTypeDto requestDTO) {
+    public ProductTypeDto register(NewProductTypeDto newProductTypeDto) {
         // Validamos las reglas de negocio antes de registrar
-        validator.validateBeforeRegister(requestDTO);
+        validator.validateNameUniqueness(newProductTypeDto.getName());
 
         // Convertimos el DTO a entidad
-        ProductType newProductType = NewProductTypeDto.toEntity(requestDTO);
+        ProductType newProductType = NewProductTypeDto.toEntity(newProductTypeDto);
 
         // Guardamos el nuevo tipo en la base de datos
         ProductType savedProductType = repository.save(newProductType);
@@ -52,24 +54,24 @@ public class ProductTypeService {
         // Buscamos tipo de producto por su ID
          return repository.findById(id)
                  .map(ProductTypeDto::fromEntity)
-                 .orElseThrow(() -> new NoSuchElementException("Tipo de producto con ID: " + id + " no encontrado."));
+                 .orElseThrow(() -> new HerkatException(ErrorMessage.PRODUCT_TYPE_NOT_FOUND));
     }
 
     public ProductTypeDto findByName(String name) {
         // Buscamos tipo de producto por su nombre
         return repository.findByNameIgnoreCase(name)
                 .map(ProductTypeDto::fromEntity)
-                .orElseThrow(() -> new NoSuchElementException("Tipo de producto con nombre: " + name + " no encontrado."));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.PRODUCT_TYPE_NOT_FOUND));
     }
 
     @Transactional
     public ProductTypeDto update(Integer id, UpdateProductTypeDto updateProductTypeDto) {
         // Validamos las reglas de negocio antes de actualizar
-        validator.validateBeforeUpdate(id, updateProductTypeDto);
+        validator.validateNameOnUpdate(id, updateProductTypeDto.getName());
 
         // Buscamos el tipo de producto por su ID
         ProductType existingType = repository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Tipo de producto con ID: " + id + " no encontrado."));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.PRODUCT_TYPE_NOT_FOUND));
 
         // Creamos la nueva instancia con los campos actualizados
         ProductType updatedType = UpdateProductTypeDto.updateEntity(updateProductTypeDto, existingType);
@@ -85,7 +87,7 @@ public class ProductTypeService {
     public void delete(Integer id) {
         // Buscamos el tipo de producto por su ID
         ProductType existingType = repository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Tipo de producto no encontrado"));
+                .orElseThrow(() -> new HerkatException(ErrorMessage.PRODUCT_TYPE_NOT_FOUND));
 
         // Eliminamos el tipo de producto de la base de datos
         repository.delete(existingType);

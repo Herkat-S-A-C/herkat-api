@@ -1,6 +1,6 @@
 package com.herkat.controllers;
 
-import com.herkat.dtos.service_item_type.NewServiceItemType;
+import com.herkat.dtos.service_item_type.NewServiceItemTypeDto;
 import com.herkat.dtos.service_item_type.ServiceItemTypeDto;
 import com.herkat.dtos.service_item_type.UpdateServiceItemTypeDto;
 import com.herkat.services.ServiceItemTypeService;
@@ -22,8 +22,8 @@ public class ServiceItemTypeController {
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public ServiceItemTypeDto register(@RequestBody @Valid NewServiceItemType newServiceItemType) {
-        return service.register(newServiceItemType);
+    public ServiceItemTypeDto register(@RequestBody @Valid NewServiceItemTypeDto newServiceItemTypeDto) {
+        return service.register(newServiceItemTypeDto);
     }
 
     @GetMapping("/all")

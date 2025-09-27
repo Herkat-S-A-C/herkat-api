@@ -1,9 +1,7 @@
 package com.herkat.validators;
 
-import com.herkat.dtos.machine.NewMachineDto;
-import com.herkat.dtos.machine.UpdateMachineDto;
-import com.herkat.exceptions.BadRequestException;
-import com.herkat.exceptions.ConflictException;
+import com.herkat.exceptions.ErrorMessage;
+import com.herkat.exceptions.HerkatException;
 import com.herkat.repositories.MachineRepository;
 import org.springframework.stereotype.Component;
 
@@ -16,29 +14,17 @@ public class MachineValidator {
         this.repository = repository;
     }
 
-    public void validateBeforeRegister(NewMachineDto dto) {
-        if(dto.getName() == null || dto.getName().isBlank()) {
-            throw new BadRequestException("El nombre de la máquina no puede estar vacío.");
-        }
-
-        if(dto.getTypeId() == null) {
-            throw new BadRequestException("El tipo de la máquina no puede estar vacío.");
-        }
-
-        if(dto.getDescription() == null || dto.getDescription().isBlank()) {
-            throw new BadRequestException("La descripción de la máquina no puede estar vacía.");
-        }
-
-        if(repository.findByNameIgnoreCase(dto.getName()).isPresent()) {
-            throw new ConflictException("El nombre de la máquina ya existe.");
+    public void validateNameUniqueness(String name) {
+        if(repository.findByNameIgnoreCase(name).isPresent()) {
+            throw new HerkatException(ErrorMessage.DUPLICATE_RECORD);
         }
     }
 
-    public void validateBeforeUpdate(Integer id, UpdateMachineDto dto) {
-        repository.findByNameIgnoreCase(dto.getName())
+    public void validateNameOnUpdate(Integer machineId, String name) {
+        repository.findByNameIgnoreCase(name)
                 .ifPresent(existingMachine -> {
-                    if(!existingMachine.getId().equals(id)) {
-                        throw new ConflictException("El nombre de la máquina ya existe.");
+                    if(!existingMachine.getId().equals(machineId)) {
+                        throw new HerkatException(ErrorMessage.DUPLICATE_RECORD);
                     }
                 });
     }
