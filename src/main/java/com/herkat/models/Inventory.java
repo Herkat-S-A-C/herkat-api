@@ -11,28 +11,28 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "com/herkat/dtos/inventory")
+@Table(name = "inventories")
 public class Inventory {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)   //ID autogenerado
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)   //los datos ingresados no pueden ser nulos
+    @Column(nullable = false)
     private Integer stock;
 
     @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;   //fecha y hora de ultima actualizacion
+    private LocalDateTime updatedAt;
 
     @PrePersist
     protected void prePersist(){                 //actualizar día
         this.updatedAt = LocalDateTime.now();
     }
 
-    public static Inventory newInventory(Integer stock, LocalDateTime updatedAt){  //inicializar nuevo registro de inventario
+    public static Inventory newInventory(Integer stock){
         return new Inventory(
                 null,
                    stock,
-                   updatedAt);
+                null);
     }
 }
