@@ -16,8 +16,7 @@ public class NewInventoryDto {
 
     public static Inventory toEntity(NewInventoryDto newInventoryDto){
         return Inventory.newInventory(
-                newInventoryDto.getStock(),
-                null
+                newInventoryDto.getStock()
         );
     }
 }
