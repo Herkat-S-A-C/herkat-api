@@ -25,15 +25,18 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductTypeRepository typeRepository;
     private final ImageService imageService;
+    private final ItemService itemService;
     private final ProductValidator validator;
 
     public ProductService(ProductRepository productRepository,
                           ProductTypeRepository typeRepository,
                           ImageService imageService,
+                          ItemService itemService,
                           ProductValidator validator) {
         this.productRepository = productRepository;
         this.typeRepository = typeRepository;
         this.imageService = imageService;
+        this.itemService = itemService;
         this.validator = validator;
     }
 
@@ -58,6 +61,7 @@ public class ProductService {
 
         // Guardamos la entidad en la DB
         Product savedProduct = productRepository.save(newProduct);
+        itemService.createItemForProduct(savedProduct);
 
         return ProductDto.fromEntity(savedProduct);
     }

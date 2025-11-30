@@ -25,15 +25,18 @@ public class MachineService {
     private final MachineRepository machineRepository;
     private final MachineTypeRepository typeRepository;
     private final ImageService imageService;
+    private final ItemService itemService;
     private final MachineValidator machineValidator;
 
     public MachineService(MachineRepository machineRepository,
                           MachineTypeRepository typeRepository,
                           ImageService imageService,
+                          ItemService itemService,
                           MachineValidator machineValidator) {
         this.machineRepository = machineRepository;
         this.typeRepository = typeRepository;
         this.imageService = imageService;
+        this.itemService = itemService;
         this.machineValidator = machineValidator;
     }
 
@@ -58,6 +61,7 @@ public class MachineService {
 
         // Guardamos en la base de datos
         Machine savedMachine = machineRepository.save(newMachine);
+        itemService.createItemForMachine(savedMachine);
 
         // Convertimos la entidad a DTO para retornarlo
         return MachineDto.fromEntity(savedMachine);
