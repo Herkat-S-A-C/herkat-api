@@ -1,6 +1,7 @@
 package com.herkat.config.aws;
 
-import io.github.cdimascio.dotenv.Dotenv;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
@@ -9,20 +10,25 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 
 @Configuration
+@RequiredArgsConstructor
 public class AwsS3Config {
+
+    @Value("${AWS_REGION}")
+    private String region;
+
+    @Value("${AWS_ACCESS_KEY_ID}")
+    private String accessKey;
+
+    @Value("${AWS_SECRET_ACCESS_KEY}")
+    private String secretKey;
 
     @Bean
     public S3Client s3Client() {
-        Dotenv dotenv = Dotenv.load();
-
-        AwsBasicCredentials creds = AwsBasicCredentials.create(
-                dotenv.get("AWS_ACCESS_KEY_ID"),
-                dotenv.get("AWS_SECRET_ACCESS_KEY")
-        );
+        AwsBasicCredentials credentials = AwsBasicCredentials.create(accessKey, secretKey);
 
         return S3Client.builder()
-                .region(Region.of(dotenv.get("AWS_REGION")))
-                .credentialsProvider(StaticCredentialsProvider.create(creds))
+                .region(Region.of(region))
+                .credentialsProvider(StaticCredentialsProvider.create(credentials))
                 .build();
     }
 }
