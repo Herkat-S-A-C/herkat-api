@@ -1,7 +1,7 @@
 # 📦 Herkat ERP - Backend
 
 Backend of the management system (Mini ERP) for Herkat.
-The software is designed to manage bottle sales, blowing services efficiently, machine sales, customer portfolio, and inventory control.
+The software is designed to manage bottle sales, blowing services efficiently, machine sales, customer portfolio, and inventoryBalance control.
 
 The system features a modular architecture, data validation, a robust role-based security scheme, and a set of RESTful endpoints for seamless integration.
 

@@ -42,12 +42,6 @@ public class BannerController {
         return service.findById(id);
     }
 
-    @GetMapping("/name/{name}")
-    @ResponseStatus(HttpStatus.OK)
-    public BannerDto findByName(@PathVariable String name) {
-        return service.findByName(name);
-    }
-
     @PutMapping(path = "/update/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public BannerDto update(@PathVariable Integer id,
