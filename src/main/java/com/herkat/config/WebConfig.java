@@ -15,7 +15,7 @@ public class WebConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins(
-                                "https://herkatpro.vercel.app", // Producción
+                                "https://herkat-v2.vercel.app", // Producción
                                 "http://localhost:5173"         // Desarrollo local
                         )
                         .allowedMethods("*")
